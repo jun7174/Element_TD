@@ -16,12 +16,12 @@ MonoBehaviour:
   Type: 0
   InstallCost: 20
   UpgradeData: {fileID: 11400000, guid: c9b0ada94c3cc704fa7d23d50b577de6, type: 2}
-  BaseDamage: 8
-  AttackSpeed: 0.8
+  BaseDamage: 20
+  AttackSpeed: 0.3
   AttackRange: 5
   AttackPattern: 2
   TargetingStrategy: {fileID: 11400000, guid: f36280c15887a894e9e10f0f3788d67d, type: 2}
-  SplashRadius: 2
+  SplashRadius: 0.3
   EffectRadius: 0
   EffectAmount: 0
   GoldPerSecond: 0

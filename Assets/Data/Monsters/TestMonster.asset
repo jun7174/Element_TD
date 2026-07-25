@@ -15,9 +15,9 @@ MonoBehaviour:
   BaseHealth: 5000
   BaseMoveSpeed: 0.1
   ElementResistances:
-  - Element: 2
-    DamageMultiplier: 1.5
   - Element: 1
+    DamageMultiplier: 1.5
+  - Element: 3
     DamageMultiplier: 0.5
   GoldReward: 3
   DamageToPlayer: 2

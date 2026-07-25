@@ -41,7 +41,9 @@ namespace ElementTD
 
         private void Update()
         {
-            MoveTowardWaypoint();
+            //                             TestMonster.cs로 임시 이동 테스트
+            // MoveTowardWaypoint(); TODO : 추후 이동 알고리즘 교체후 추가 
+
         }
 
         private void MoveTowardWaypoint()
