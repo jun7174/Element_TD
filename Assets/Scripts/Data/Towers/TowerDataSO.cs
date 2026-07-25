@@ -19,6 +19,7 @@ namespace ElementTD
         public float AttackSpeed;
         public float AttackRange;
         public AttackPatternType AttackPattern;
+        public TargetingStrategySO TargetingStrategy;
 
         [Tooltip("범위공격 타워에만 사용하며, 그 외 전투형 타워는 0으로 둔다.")]
         public float SplashRadius;

@@ -10,11 +10,4 @@ namespace ElementTD
         Support,
         Economy
     }
-
-    public enum TowerTier
-    {
-        One,
-        Two,
-        Three
-    }
 }

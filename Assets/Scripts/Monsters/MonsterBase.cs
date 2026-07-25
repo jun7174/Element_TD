@@ -6,8 +6,14 @@ using UnityEngine;
 namespace ElementTD
 {
     // 몬스터의 이동, 체력, 원소 저항 적용을 담당한다.
+    // 이동은 지금 단계에서 단일 목표 지점을 향해 직선으로 이동하는 단순한 방식이며,
+    // 실제 경로 이동 방식은 스테이지 시스템을 작성하는 단계에서 다시 검토한다.
     public class MonsterBase : MonoBehaviour
     {
+        private static readonly List<MonsterBase> s_activeMonsters = new List<MonsterBase>();
+
+        public static IReadOnlyList<MonsterBase> ActiveMonsters => s_activeMonsters;
+
         [SerializeField]
         private MonsterDataSO _monsterData;
 
@@ -15,10 +21,21 @@ namespace ElementTD
         private Transform _targetWaypoint;
 
         private float _currentHealth;
+        private float _speedMultiplier = 1f;
 
         private void Awake()
         {
             _currentHealth = _monsterData.BaseHealth;
+        }
+
+        private void OnEnable()
+        {
+            s_activeMonsters.Add(this);
+        }
+
+        private void OnDisable()
+        {
+            s_activeMonsters.Remove(this);
         }
 
         private void Update()
@@ -34,7 +51,8 @@ namespace ElementTD
             }
 
             Vector3 direction = (_targetWaypoint.position - transform.position).normalized;
-            transform.position += direction * _monsterData.BaseMoveSpeed * Time.deltaTime;
+            float currentSpeed = _monsterData.BaseMoveSpeed * _speedMultiplier;
+            transform.position += direction * currentSpeed * Time.deltaTime;
         }
 
         // 원소 공격을 받았을 때 적용되는 배율을 반환한다.
@@ -51,8 +69,19 @@ namespace ElementTD
                 }
             }
 
-            Debug.Log("저항 없음");
             return 1f;
+        }
+
+        // 구속타워 오라로부터 이동속도 감소 디버프를 받는다.
+        public void ApplySpeedDebuff(float amount)
+        {
+            _speedMultiplier = 1f - amount;
+        }
+
+        // 디버프 범위를 벗어나면 호출되어 이동속도 감소를 해제한다.
+        public void RemoveSpeedDebuff()
+        {
+            _speedMultiplier = 1f;
         }
 
         // 데미지를 받아 체력을 감소시킨다.

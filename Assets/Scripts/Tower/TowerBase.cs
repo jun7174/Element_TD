@@ -1,106 +1,85 @@
-// Assets/Scripts/Tower/TowerBase.cs
+// Assets/Scripts/Towers/TowerBase.cs
 
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace ElementTD
 {
-    // Å¸¿öÀÇ °ø°İ, ¿ø¼Ò, ¼³Ä¡¸¦ ´ã´çÇÑ´Ù.
+    // íƒ€ì›Œì˜ ë°°ì¹˜ì™€ í˜„ì¬ ìœ„ì¹˜ì˜ íƒ€ì¼ ì›ì†Œ ì¡°íšŒë¥¼ ë‹´ë‹¹í•˜ê³ ,
+    // ì›ì†Œ ì‹œë„ˆì§€ ì¡°íšŒ ê²°ê³¼ë¥¼ ì „íˆ¬, ì˜¤ë¼, ì¸ì»´ ë“± ë‹¤ë¥¸ ì»´í¬ë„ŒíŠ¸ì— ì œê³µí•œë‹¤.
+    // ê³µê²© ì‹¤í–‰ ìì²´ëŠ” ì´ í´ë˜ìŠ¤ì˜ ì±…ì„ì´ ì•„ë‹ˆë©° TowerCombatControllerê°€ ë‹´ë‹¹í•œë‹¤.
     public class TowerBase : MonoBehaviour
     {
+        private static readonly List<TowerBase> s_activeTowers = new List<TowerBase>();
+
+        public static IReadOnlyList<TowerBase> ActiveTowers => s_activeTowers;
+
         [SerializeField]
         private TowerDataSO _towerData;
 
+        [Tooltip("ê²Œì„ì— ì¡´ì¬í•˜ëŠ” ëª¨ë“  ì›ì†Œ ë°ì´í„° ì—ì…‹ ëª©ë¡ì´ë‹¤. ì§€ê¸ˆ ë‹¨ê³„ì—ì„œëŠ” ì¸ìŠ¤í™í„°ì—ì„œ ì§ì ‘ ì±„ì›Œ ë„£ëŠ”ë‹¤.")]
         [SerializeField]
         private List<ElementDataSO> _elementDataList;
 
-        private TowerTier towerTier;
+        private ElementSynergyEvaluator _synergyEvaluator;
+        private float _buffMultiplier = 1f;
 
-        public MonsterBase TestMonster;
-        public ElementType TestElement = ElementType.None;
+        public TowerDataSO TowerData => _towerData;
+        public float BuffMultiplier => _buffMultiplier;
 
         private void Awake()
         {
-            // TODO : ¿ø¼Ò ¸ñ·Ï ´ã¾ÆµÑ ½ºÅ©¸³Æ® Ãß°¡ ¿¹Á¤
-
+            _synergyEvaluator = new ElementSynergyEvaluator(_elementDataList);
         }
 
-        private void Start()
+        private void OnEnable()
         {
-            
+            s_activeTowers.Add(this);
         }
-        //Å¸¿ö µ¥¹ÌÁö Å×½ºÆ® ÇÔ¼ö
-        [ContextMenu("Test_Atk")]
-        void AtkTest()
+
+        private void OnDisable()
         {
-            Attack(TestMonster);
+            s_activeTowers.Remove(this);
         }
 
-        //Å¸¿ö ¾÷±×·¹ÀÌµå Å×½ºÆ® ÇÔ¼ö
-        [ContextMenu("Test_TierUpgrade")]
-
-        void TierTest()
-        {
-            switch (towerTier)
-            {
-                case (TowerTier.One):
-                    towerTier = TowerTier.Two;
-                    break;
-                case (TowerTier.Two):
-                    towerTier = TowerTier.Three;
-                    break;
-                case (TowerTier.Three):
-                    towerTier = TowerTier.One;
-                    break;
-                default:
-                    break;
-            }
-
-        }
-
-            public void PlaceAt(Vector2 position)
+        // íƒ€ì›Œë¥¼ ì£¼ì–´ì§„ ìœ„ì¹˜ë¡œ ì´ë™ì‹œì¼œ ë°°ì¹˜í•œë‹¤.
+        public void PlaceAt(Vector2 position)
         {
             transform.position = position;
         }
 
+        // í˜„ì¬ ì„œ ìˆëŠ” íƒ€ì¼ì˜ ì›ì†Œë¥¼ ì¡°íšŒí•œë‹¤.
+        // íƒ€ì¼ì„ ì°¾ì§€ ëª»í•˜ë©´ ë¬´ì†ì„±ì„ ë°˜í™˜í•œë‹¤.
         public ElementType GetCurrentElement()
         {
-            //TODO : ÃßÈÄ Å¸¿ö ¾Æ·¡ Å¸ÀÏÀÇ ¿ø¼Ò Á¶»çÇÔ¼ö·Î ±³Ã¼
-            return TestElement;
-        }
+            ElementTile currentTile = ElementTile.FindTileAt(transform.position);
 
-        // ¸ó½ºÅÍ Å¸°İ
-        public void Attack(MonsterBase monster)
-        {
-            float damage = DamageCalculator(monster, GetCurrentElement());
-
-        }
-
-        //¸ó½ºÅÍ Å¸°İ½Ã ¿ø¼Ò »ó¼º°ú Æ÷Å¾ÀÇ µ¥¹ÌÁö °è»êÇÏ¿© ÃÖÁ¾µ¥¹ÌÁö °è»ê
-        public float DamageCalculator(MonsterBase monster, ElementType towerElementType)
-        {
-            float baseDamage = _towerData.BaseDamage;
-            float elementMultiplier = monster.GetResistanceMultiplier(towerElementType);
-
-            float combatEffectMultiplier = 1f;
-            switch (towerTier)
+            if (currentTile == null)
             {
-                case (TowerTier.Two):
-                    combatEffectMultiplier = 1f + _towerData.UpgradeData.FirstUpgrade.CoreValueIncreaseRate;
-                    break;
-                case (TowerTier.Three):
-                    combatEffectMultiplier = 1f + _towerData.UpgradeData.FirstUpgrade.CoreValueIncreaseRate + _towerData.UpgradeData.SecondUpgrade.CoreValueIncreaseRate;
-                    break;
-                default:
-                    combatEffectMultiplier = 1f;
-                    break;
+                return ElementType.None;
             }
 
-            Debug.Log(combatEffectMultiplier + "Å¸¿ö¹è¼ö");
-            Debug.Log(elementMultiplier + "¿ø¼Ò¹è¼ö");
-            Debug.Log(elementMultiplier * combatEffectMultiplier + "ÃÖÁ¾¹è¼ö");
+            return currentTile.Element;
+        }
 
-            return 0;
+        // í˜„ì¬ ì„œ ìˆëŠ” íƒ€ì¼ì˜ ì›ì†Œì™€ ì´ íƒ€ì›Œì˜ ê³„ì¸µì— ë§ëŠ” íš¨ê³¼ë¥¼ ì¡°íšŒí•œë‹¤.
+        // ì›ì†Œê°€ ì—†ê±°ë‚˜ ì¼ì¹˜í•˜ëŠ” íš¨ê³¼ê°€ ì—†ìœ¼ë©´ nullì„ ë°˜í™˜í•œë‹¤.
+        public ElementEffectSO GetCurrentElementEffect()
+        {
+            ElementType currentElement = GetCurrentElement();
+            return _synergyEvaluator.GetEffect(currentElement, _towerData.Type);
+        }
+
+        // ì§€íœ˜íƒ€ì›Œ ì˜¤ë¼ë¡œë¶€í„° ê³µê²©ë ¥ ë²„í”„ë¥¼ ë°›ëŠ”ë‹¤.
+        public void ApplyBuff(float amount)
+        {
+            _buffMultiplier = 1f + amount;
+        }
+
+        // ë²„í”„ ë²”ìœ„ë¥¼ ë²—ì–´ë‚˜ë©´ í˜¸ì¶œë˜ì–´ ë²„í”„ë¥¼ í•´ì œí•œë‹¤.
+        public void RemoveBuff()
+        {
+            _buffMultiplier = 1f;
         }
     }
 }
