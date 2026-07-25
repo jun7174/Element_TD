@@ -265,7 +265,7 @@ Transform:
   m_GameObject: {fileID: 93228942}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.28, y: -0.63, z: 0}
+  m_LocalPosition: {x: -10.79, y: -0.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -374,7 +374,7 @@ GameObject:
   - component: {fileID: 498884992}
   - component: {fileID: 498884991}
   m_Layer: 0
-  m_Name: spr_bat_0
+  m_Name: Basic_Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -394,6 +394,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ElementTD.MonsterBase
   _monsterData: {fileID: 11400000, guid: 23dc7e29ca058d0459bae7d65d084142, type: 2}
   _targetWaypoint: {fileID: 485410294}
+  _currentHealth: 0
 --- !u!212 &498884992
 SpriteRenderer:
   serializedVersion: 2
@@ -444,7 +445,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 5268096014038210963, guid: 701ce7516b542a44ea2c8b13549d8e6d, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -462,7 +463,7 @@ Transform:
   m_GameObject: {fileID: 498884990}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.100075, y: -3.2910872, z: 0}
+  m_LocalPosition: {x: -13.91, y: -0.57, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -700,8 +701,9 @@ GameObject:
   - component: {fileID: 1184617472}
   - component: {fileID: 1184617471}
   - component: {fileID: 1184617473}
+  - component: {fileID: 1184617474}
   m_Layer: 0
-  m_Name: TowerTower
+  m_Name: TestTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -775,7 +777,7 @@ Transform:
   m_GameObject: {fileID: 1184617470}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.25, y: -1.88, z: 0}
+  m_LocalPosition: {x: -11.17, y: -0.68, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -797,6 +799,21 @@ MonoBehaviour:
   _elementDataList:
   - {fileID: 11400000, guid: 1d263b75a7738df44a79d62556f5d16f, type: 2}
   - {fileID: 11400000, guid: 139aa2b8538e1ed4e9a0a3d1f1e49964, type: 2}
+  - {fileID: 11400000, guid: 57116b0bb27d2d14f96b71363ae0caeb, type: 2}
+  - {fileID: 11400000, guid: d875e2f31dae18d4ab4821763d0f0430, type: 2}
+  - {fileID: 11400000, guid: 92073788d5bdcd143948cd88cc5b74a4, type: 2}
+--- !u!114 &1184617474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184617470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cab127d5a0f48c244af931191d3904f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ElementTD.TowerCombatController
 --- !u!1 &1412688026
 GameObject:
   m_ObjectHideFlags: 0

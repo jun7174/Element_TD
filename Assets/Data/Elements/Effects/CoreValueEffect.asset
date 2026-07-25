@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee59cc84e412cec4095c6133472deca7, type: 3}
-  m_Name: WaterAttackSpeedEffect
+  m_Name: CoreValueEffect
   m_EditorClassIdentifier: Assembly-CSharp::ElementTD.StatModifierEffectSO
-  EffectName: WaterAttackSpeedEffect
-  EffectDescription: 
-  TargetStat: 0
+  EffectName: CoreValueEffect
+  EffectDescription: "\uBCA8\uB958\uC99D\uAC00\uD6A8\uACFC"
+  TargetStat: 5
   ModifierValue: 0.1

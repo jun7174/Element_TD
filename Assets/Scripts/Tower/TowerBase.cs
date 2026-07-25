@@ -62,7 +62,7 @@ namespace ElementTD
             return currentTile.Element;
         }
 
-        // 현재 서 있는 타일의 원소와 이 타워의 계층에 맞는 효과를 조회한다.
+        // 현재 서 있는 타일의 원소와 이 타워의 타입에 맞는 효과를 조회한다.
         // 원소가 없거나 일치하는 효과가 없으면 null을 반환한다.
         public ElementEffectSO GetCurrentElementEffect()
         {

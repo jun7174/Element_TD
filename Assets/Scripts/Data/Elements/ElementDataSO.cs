@@ -9,7 +9,7 @@ namespace ElementTD
     {
         public ElementType Element;
 
-        [Header("계층별 효과 슬롯")]
+        [Header("타입별 효과 슬롯")]
         [Tooltip("전투형 타워가 이 원소 타일 위에 있을 때 적용되는 효과이다.")]
         public ElementEffectSO CombatEffect;
 

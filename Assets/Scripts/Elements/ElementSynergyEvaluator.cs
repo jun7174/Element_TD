@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ElementTD
 {
-    // 계층과 원소 조합을 받아서 해당하는 원소 효과를 조회하는 역할만 담당한다.
+    // 타입과 원소 조합을 받아서 해당하는 원소 효과를 조회하는 역할만 담당한다.
     // 효과를 실제로 적용하는 계산은 이 클래스가 아니라 이 결과를 사용하는 쪽에서 처리한다.
     public class ElementSynergyEvaluator
     {
@@ -15,7 +15,7 @@ namespace ElementTD
             _elementDataList = elementDataList;
         }
 
-        // 주어진 원소와 계층에 해당하는 효과를 찾아서 반환한다.
+        // 주어진 원소와 타입에 해당하는 효과를 찾아서 반환한다.
         // 일치하는 원소 데이터가 없거나 원소가 없는 경우에는 null을 반환한다.
         public ElementEffectSO GetEffect(ElementType element, TowerType type)
         {

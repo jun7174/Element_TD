@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee59cc84e412cec4095c6133472deca7, type: 3}
-  m_Name: FireDamageEffect
+  m_Name: DarkArmorPenetrationEffect
   m_EditorClassIdentifier: Assembly-CSharp::ElementTD.StatModifierEffectSO
-  EffectName: 
-  EffectDescription: 
-  TargetStat: 1
+  EffectName: DarkArmorPenetrationEffect
+  EffectDescription: "\uC554\uD751\uC6D0\uC18C_\uBC29\uC5B4\uAD00\uD1B5\uC99D\uAC00"
+  TargetStat: 2
   ModifierValue: 0.1

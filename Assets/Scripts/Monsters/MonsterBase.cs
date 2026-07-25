@@ -20,6 +20,7 @@ namespace ElementTD
         [SerializeField]
         private Transform _targetWaypoint;
 
+        [SerializeField]
         private float _currentHealth;
         private float _speedMultiplier = 1f;
 

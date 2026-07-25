@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b6c4fbf9504a0f4abfc7d04bb002828, type: 3}
-  m_Name: StandardTower
+  m_Name: SplashTower
   m_EditorClassIdentifier: Assembly-CSharp::ElementTD.TowerDataSO
-  TowerName: StandardTower
+  TowerName: SplashTower
   Type: 0
-  InstallCost: 0
-  UpgradeData: {fileID: 0}
-  BaseDamage: 10
-  AttackSpeed: 1
-  AttackRange: 3
-  AttackPattern: 0
-  SplashRadius: 0
+  InstallCost: 20
+  UpgradeData: {fileID: 11400000, guid: c9b0ada94c3cc704fa7d23d50b577de6, type: 2}
+  BaseDamage: 8
+  AttackSpeed: 0.8
+  AttackRange: 5
+  AttackPattern: 2
+  TargetingStrategy: {fileID: 11400000, guid: f36280c15887a894e9e10f0f3788d67d, type: 2}
+  SplashRadius: 2
   EffectRadius: 0
   EffectAmount: 0
   GoldPerSecond: 0
