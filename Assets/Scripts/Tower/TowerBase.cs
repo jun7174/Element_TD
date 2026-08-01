@@ -52,17 +52,10 @@ namespace ElementTD
         // 타일을 찾지 못하면 무속성을 반환한다.
         public ElementType GetCurrentElement()
         {
-            ElementTile currentTile = ElementTile.FindTileAt(transform.position);
-
-            if (currentTile == null)
-            {
-                return ElementType.None;
-            }
-
-            return currentTile.Element;
+            return ElementTileQuery.GetElementAt(transform.position);
         }
 
-        // 현재 서 있는 타일의 원소와 이 타워의 타입에 맞는 효과를 조회한다.
+        // 현재 서 있는 타일의 원소와 이 타워의 계층에 맞는 효과를 조회한다.
         // 원소가 없거나 일치하는 효과가 없으면 null을 반환한다.
         public ElementEffectSO GetCurrentElementEffect()
         {

@@ -9,11 +9,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b446a53ad5a3a24e9869284a641c8ab, type: 3}
+  m_Script: {fileID: 11500000, guid: b7b61b037ef00a84b8862855125a612e, type: 3}
   m_Name: WaterTile
-  m_EditorClassIdentifier: Assembly-CSharp::ElementTD.CustomTileBase
-  m_DefaultSprite: {fileID: -6372542960464771122, guid: 88ee7c9054fa9904b9e029fd78b43a9d, type: 3}
-  m_DefaultGameObject: {fileID: 0}
-  m_DefaultColliderType: 1
-  m_TilingRules: []
-  elementType: 1
+  m_EditorClassIdentifier: Assembly-CSharp::ElementTD.ElementTileBase
+  m_Sprite: {fileID: 1441474139354803899, guid: 8ff37e15d83bcd144b7ba4bae70bf46d, type: 3}
+  m_Color: {r: 0, g: 0.049153805, b: 1, a: 1}
+  m_Transform:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
+  m_InstancedGameObject: {fileID: 0}
+  m_Flags: 1
+  m_ColliderType: 1
+  Element: 1

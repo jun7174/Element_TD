@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edf5c81bd1b7ca144aec59f199abd626, type: 3}
+  m_Name: Stage1Data
+  m_EditorClassIdentifier: Assembly-CSharp::ElementTD.StageDataSO
+  StagePrefab: {fileID: 1407512584916476210, guid: 8bc2177f94bdac2479f2e83b9c4418ba, type: 3}
+  ElementTileRatio: 0.35
+  WaveSequence:
+  - MonsterEntries:
+    - Monster: {fileID: 11400000, guid: 23dc7e29ca058d0459bae7d65d084142, type: 2}
+      Count: 5
+    - Monster: {fileID: 11400000, guid: a3b3b353813990741a894d4fcc90c40f, type: 2}
+      Count: 10
+  - MonsterEntries:
+    - Monster: {fileID: 11400000, guid: 23dc7e29ca058d0459bae7d65d084142, type: 2}
+      Count: 5
+    - Monster: {fileID: 11400000, guid: a3b3b353813990741a894d4fcc90c40f, type: 2}
+      Count: 10
+    - Monster: {fileID: 11400000, guid: dc83ca308cac2f241a11b5a92da7d322, type: 2}
+      Count: 15
+  - MonsterEntries:
+    - Monster: {fileID: 11400000, guid: 23dc7e29ca058d0459bae7d65d084142, type: 2}
+      Count: 15
+    - Monster: {fileID: 11400000, guid: a3b3b353813990741a894d4fcc90c40f, type: 2}
+      Count: 15
+    - Monster: {fileID: 11400000, guid: dc83ca308cac2f241a11b5a92da7d322, type: 2}
+      Count: 15
+  - MonsterEntries:
+    - Monster: {fileID: 11400000, guid: 23dc7e29ca058d0459bae7d65d084142, type: 2}
+      Count: 15
+    - Monster: {fileID: 11400000, guid: a3b3b353813990741a894d4fcc90c40f, type: 2}
+      Count: 15
+    - Monster: {fileID: 11400000, guid: dc83ca308cac2f241a11b5a92da7d322, type: 2}
+      Count: 15
+  - MonsterEntries:
+    - Monster: {fileID: 11400000, guid: 23dc7e29ca058d0459bae7d65d084142, type: 2}
+      Count: 15
+    - Monster: {fileID: 11400000, guid: a3b3b353813990741a894d4fcc90c40f, type: 2}
+      Count: 15
+    - Monster: {fileID: 11400000, guid: dc83ca308cac2f241a11b5a92da7d322, type: 2}
+      Count: 15
+  - MonsterEntries:
+    - Monster: {fileID: 11400000, guid: 23dc7e29ca058d0459bae7d65d084142, type: 2}
+      Count: 15
+    - Monster: {fileID: 11400000, guid: a3b3b353813990741a894d4fcc90c40f, type: 2}
+      Count: 15
+    - Monster: {fileID: 11400000, guid: dc83ca308cac2f241a11b5a92da7d322, type: 2}
+      Count: 15
+  - MonsterEntries:
+    - Monster: {fileID: 11400000, guid: 23dc7e29ca058d0459bae7d65d084142, type: 2}
+      Count: 15
+    - Monster: {fileID: 11400000, guid: a3b3b353813990741a894d4fcc90c40f, type: 2}
+      Count: 15
+    - Monster: {fileID: 11400000, guid: dc83ca308cac2f241a11b5a92da7d322, type: 2}
+      Count: 15
+  - MonsterEntries:
+    - Monster: {fileID: 11400000, guid: 23dc7e29ca058d0459bae7d65d084142, type: 2}
+      Count: 15
+    - Monster: {fileID: 11400000, guid: a3b3b353813990741a894d4fcc90c40f, type: 2}
+      Count: 15
+    - Monster: {fileID: 11400000, guid: dc83ca308cac2f241a11b5a92da7d322, type: 2}
+      Count: 15
+  - MonsterEntries:
+    - Monster: {fileID: 11400000, guid: 23dc7e29ca058d0459bae7d65d084142, type: 2}
+      Count: 15
+    - Monster: {fileID: 11400000, guid: a3b3b353813990741a894d4fcc90c40f, type: 2}
+      Count: 15
+    - Monster: {fileID: 11400000, guid: dc83ca308cac2f241a11b5a92da7d322, type: 2}
+      Count: 15
+  - MonsterEntries:
+    - Monster: {fileID: 11400000, guid: 23dc7e29ca058d0459bae7d65d084142, type: 2}
+      Count: 15
+    - Monster: {fileID: 11400000, guid: a3b3b353813990741a894d4fcc90c40f, type: 2}
+      Count: 15
+    - Monster: {fileID: 11400000, guid: dc83ca308cac2f241a11b5a92da7d322, type: 2}
+      Count: 15
+  DifficultyMultiplier: 1
+  StartingGold: 300
+  SpawnInterval: 0.6

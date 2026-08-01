@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7b61b037ef00a84b8862855125a612e, type: 3}
-  m_Name: GrassTile
+  m_Name: LightTile
   m_EditorClassIdentifier: Assembly-CSharp::ElementTD.ElementTileBase
-  m_Sprite: {fileID: 1441474139354803899, guid: 8ff37e15d83bcd144b7ba4bae70bf46d, type: 3}
-  m_Color: {r: 0, g: 1, b: 0.13162541, a: 1}
+  m_Sprite: {fileID: -8117239108611730103, guid: bccff4038b7da6644a450e376eae8063, type: 3}
+  m_Color: {r: 0.92502785, g: 0, b: 1, a: 1}
   m_Transform:
     e00: 1
     e01: 0
@@ -34,4 +34,4 @@ MonoBehaviour:
   m_InstancedGameObject: {fileID: 0}
   m_Flags: 1
   m_ColliderType: 1
-  Element: 3
+  Element: 5

@@ -5,29 +5,27 @@ using UnityEngine;
 
 namespace ElementTD
 {
-    // 몬스터의 이동, 체력, 원소 저항 적용을 담당한다.
-    // 이동은 지금 단계에서 단일 목표 지점을 향해 직선으로 이동하는 단순한 방식이며,
-    // 실제 경로 이동 방식은 스테이지 시스템을 작성하는 단계에서 다시 검토한다.
+    // 몬스터의 이동, 체력, 원소 저항 적용, 누출 판정을 담당한다.
+    // 몬스터 데이터와 난이도 배율은 스폰 시점에 Initialize를 통해 외부에서 주입받는다.
+    // 이렇게 하면 몬스터 프리팹 하나로 모든 원형과 원소 변종을 전부 처리할 수 있다.
     public class MonsterBase : MonoBehaviour
     {
+        private const float ArrivalThreshold = 0.1f;
+
         private static readonly List<MonsterBase> s_activeMonsters = new List<MonsterBase>();
 
         public static IReadOnlyList<MonsterBase> ActiveMonsters => s_activeMonsters;
 
-        [SerializeField]
         private MonsterDataSO _monsterData;
-
-        [SerializeField]
-        private Transform _targetWaypoint;
-
-        [SerializeField]
+        private float _difficultyMultiplier = 1f;
         private float _currentHealth;
         private float _speedMultiplier = 1f;
 
-        private void Awake()
-        {
-            _currentHealth = _monsterData.BaseHealth;
-        }
+        private List<Transform> _path;
+        private int _currentWaypointIndex;
+
+        // 난이도 배율이 반영된 처치 골드이다. 경제 시스템이 연결되면 이 값을 사용한다.
+        public int GoldReward => Mathf.RoundToInt(_monsterData.GoldReward * _difficultyMultiplier);
 
         private void OnEnable()
         {
@@ -41,21 +39,55 @@ namespace ElementTD
 
         private void Update()
         {
-            //                             TestMonster.cs로 임시 이동 테스트
-            // MoveTowardWaypoint(); TODO : 추후 이동 알고리즘 교체후 추가 
-
+            MoveAlongPath();
         }
 
-        private void MoveTowardWaypoint()
+        // 스폰 시점에 몬스터 데이터와 난이도 배율을 주입받는다.
+        // 체력은 기본 체력에 난이도 배율을 곱한 값으로 초기화된다.
+        public void Initialize(MonsterDataSO monsterData, float difficultyMultiplier)
         {
-            if (_targetWaypoint == null)
+            _monsterData = monsterData;
+            _difficultyMultiplier = difficultyMultiplier;
+            _currentHealth = _monsterData.BaseHealth * _difficultyMultiplier;
+        }
+
+        // 이동 경로를 설정한다. 목록의 첫 번째 지점부터 순서대로 통과한다.
+        public void SetPath(List<Transform> path)
+        {
+            _path = path;
+            _currentWaypointIndex = 0;
+        }
+
+        private void MoveAlongPath()
+        {
+            if (_path == null || _currentWaypointIndex >= _path.Count)
             {
                 return;
             }
 
-            Vector3 direction = (_targetWaypoint.position - transform.position).normalized;
+            Transform currentWaypoint = _path[_currentWaypointIndex];
+            Vector3 direction = (currentWaypoint.position - transform.position).normalized;
             float currentSpeed = _monsterData.BaseMoveSpeed * _speedMultiplier;
             transform.position += direction * currentSpeed * Time.deltaTime;
+
+            float distanceToWaypoint = Vector2.Distance(transform.position, currentWaypoint.position);
+
+            if (distanceToWaypoint <= ArrivalThreshold)
+            {
+                _currentWaypointIndex++;
+
+                if (_currentWaypointIndex >= _path.Count)
+                {
+                    ReachEndOfPath();
+                }
+            }
+        }
+
+        private void ReachEndOfPath()
+        {
+            int scaledDamage = Mathf.RoundToInt(_monsterData.DamageToPlayer * _difficultyMultiplier);
+            PlayerHealth.TakeDamage(scaledDamage);
+            Destroy(gameObject);
         }
 
         // 원소 공격을 받았을 때 적용되는 배율을 반환한다.

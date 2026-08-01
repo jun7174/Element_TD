@@ -23,8 +23,8 @@ namespace ElementTD
     [CreateAssetMenu(fileName = "NewStageData", menuName = "ElementTD/Stage Data")]
     public class StageDataSO : ScriptableObject
     {
-        [Tooltip("이 스테이지의 고정 타일맵 구조가 담긴 프리팹이다.")]
-        public GameObject TilemapReference;
+        [Tooltip("이 스테이지의 고정 구조가 담긴 프리팹이다. 타일맵과 웨이포인트를 자식으로 포함한다.")]
+        public GameObject StagePrefab;
 
         [Range(0f, 1f)]
         [Tooltip("설치 가능 타일 중 원소가 부여되는 비율이다. 0.3에서 0.4 사이 값을 사용한다.")]
@@ -37,5 +37,8 @@ namespace ElementTD
         public float DifficultyMultiplier;
 
         public int StartingGold;
+
+        [Tooltip("같은 웨이브 안에서 몬스터가 하나씩 스폰되는 간격이다. 단위는 초이다.")]
+        public float SpawnInterval;
     }
 }
