@@ -43,7 +43,7 @@ namespace ElementTD
             {
                 if (!_buffedTowers.Contains(tower))
                 {
-                    tower.ApplyBuff(_towerBase.TowerData.EffectAmount);
+                    tower.ApplyBuff(_towerBase.GetUpgradedCoreValue());
                     _buffedTowers.Add(tower);
                 }
             }
@@ -68,7 +68,7 @@ namespace ElementTD
             {
                 if (!_debuffedMonsters.Contains(monster))
                 {
-                    monster.ApplySpeedDebuff(_towerBase.TowerData.EffectAmount);
+                    monster.ApplySpeedDebuff(_towerBase.GetUpgradedCoreValue());
                     _debuffedMonsters.Add(monster);
                 }
             }

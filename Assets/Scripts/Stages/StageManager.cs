@@ -31,7 +31,8 @@ namespace ElementTD
 
             _elementTileGenerator.Generate(stageReferences, _stageData.ElementTileRatio);
 
-            Debug.Log("시작 골드 " + _stageData.StartingGold);
+            EconomyManager.Initialize(_stageData.StartingGold);
+            Debug.Log("시작 골드 " + EconomyManager.CurrentGold);
 
             _waveSpawner.StartStage(_stageData, stageReferences);
         }

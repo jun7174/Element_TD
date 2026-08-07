@@ -120,14 +120,15 @@ namespace ElementTD
         }
 
         // 데미지를 받아 체력을 감소시킨다.
-        // 체력이 0 이하가 되면 몬스터를 제거한다.
+        // 체력이 0 이하가 되면 처치 골드를 지급하고 몬스터를 제거한다.
         public void TakeDamage(float damageAmount)
         {
             _currentHealth -= damageAmount;
 
             if (_currentHealth <= 0f)
             {
-                Debug.Log(_monsterData.name + " 처치됨");
+                EconomyManager.AddGold(GoldReward);
+                Debug.Log(_monsterData.name + " 처치됨, 골드 획득 " + GoldReward);
                 Destroy(gameObject);
             }
         }

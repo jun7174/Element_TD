@@ -284,11 +284,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6324515493960564617, guid: 721b75ac900569645a9cd0ca4e7feddb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.1025
+      value: -2.92
       objectReference: {fileID: 0}
     - target: {fileID: 6324515493960564617, guid: 721b75ac900569645a9cd0ca4e7feddb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.88057
+      value: 1.02
       objectReference: {fileID: 0}
     - target: {fileID: 6324515493960564617, guid: 721b75ac900569645a9cd0ca4e7feddb, type: 3}
       propertyPath: m_LocalPosition.z
@@ -651,6 +651,10 @@ GameObject:
   - component: {fileID: 1375056395}
   - component: {fileID: 1375056394}
   - component: {fileID: 1375056393}
+  - component: {fileID: 1375056399}
+  - component: {fileID: 1375056398}
+  - component: {fileID: 1375056397}
+  - component: {fileID: 1375056400}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -719,6 +723,61 @@ MonoBehaviour:
   _stageData: {fileID: 11400000, guid: 89827983e592d85418515c4c1cdc9044, type: 2}
   _elementTileGenerator: {fileID: 1375056394}
   _waveSpawner: {fileID: 1375056393}
+--- !u!114 &1375056397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1375056391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e578c1710d91ad547a4624ad0df4afd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ElementTD.TowerUpgradeController
+--- !u!114 &1375056398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1375056391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cf9474fdd4975e45b5c99f98b3edd34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ElementTD.TowerRelocationController
+--- !u!114 &1375056399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1375056391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 412a08c83187ab444a25b6371adb2d82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ElementTD.TowerTradeController
+  _sellRefundRatio: 0.85
+--- !u!114 &1375056400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1375056391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13c6d220e8376d746857dce5fab29bd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ElementTD.TestEconomyTrigger
+  _tradeController: {fileID: 1375056399}
+  _upgradeController: {fileID: 1375056397}
+  _relocationController: {fileID: 1375056398}
+  _towerPrefabToPurchase: {fileID: 1424369766806130759, guid: 721b75ac900569645a9cd0ca4e7feddb, type: 3}
+  _purchasePosition: {x: 0, y: 0}
+  _relocationPosition: {x: 0, y: 0}
 --- !u!1001 &5644571078054910667
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -23,9 +23,11 @@ namespace ElementTD
 
         private ElementSynergyEvaluator _synergyEvaluator;
         private float _buffMultiplier = 1f;
+        private TowerUpgradeState _upgradeState = TowerUpgradeState.Base;
 
         public TowerDataSO TowerData => _towerData;
         public float BuffMultiplier => _buffMultiplier;
+        public TowerUpgradeState UpgradeState => _upgradeState;
 
         private void Awake()
         {
@@ -73,6 +75,51 @@ namespace ElementTD
         public void RemoveBuff()
         {
             _buffMultiplier = 1f;
+        }
+
+        // TowerUpgradeController가 강화 성공 시 호출해서 강화 상태를 변경한다.
+        public void SetUpgradeState(TowerUpgradeState newState)
+        {
+            _upgradeState = newState;
+        }
+
+        // 이 타워 계층의 핵심 수치에 강화 배율을 곱한 값을 반환한다.
+        // 전투형은 데미지, 지원형은 효과량, 경제형은 골드 생산량이 핵심 수치이다.
+        public float GetUpgradedCoreValue()
+        {
+            float baseValue = GetBaseCoreValue();
+            float upgradeMultiplier = GetUpgradeMultiplier();
+            return baseValue * upgradeMultiplier;
+        }
+
+        private float GetBaseCoreValue()
+        {
+            switch (_towerData.Type)
+            {
+                case TowerType.Combat:
+                    return _towerData.BaseDamage;
+                case TowerType.Support:
+                    return _towerData.EffectAmount;
+                case TowerType.Economy:
+                    return _towerData.GoldPerSecond;
+                default:
+                    return 0f;
+            }
+        }
+
+        private float GetUpgradeMultiplier()
+        {
+            if (_upgradeState == TowerUpgradeState.First)
+            {
+                return 1f + _towerData.UpgradeData.FirstUpgrade.CoreValueIncreaseRate;
+            }
+
+            if (_upgradeState == TowerUpgradeState.Second)
+            {
+                return 1f + _towerData.UpgradeData.SecondUpgrade.CoreValueIncreaseRate;
+            }
+
+            return 1f;
         }
     }
 }

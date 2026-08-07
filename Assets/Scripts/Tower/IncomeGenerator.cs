@@ -35,21 +35,21 @@ namespace ElementTD
         private void GenerateGold()
         {
             float goldAmount = CalculateGoldAmount();
-
+            EconomyManager.AddGold(Mathf.RoundToInt(goldAmount));
             Debug.Log(_towerBase.TowerData.TowerName + " 골드 생산 " + goldAmount);
         }
 
         private float CalculateGoldAmount()
         {
-            TowerDataSO towerData = _towerBase.TowerData;
+            float baseGold = _towerBase.GetUpgradedCoreValue();
             ElementEffectSO currentEffect = _towerBase.GetCurrentElementEffect();
 
             if (currentEffect is StatModifierEffectSO statModifierEffect && statModifierEffect.TargetStat == TargetStat.CoreValue)
             {
-                return towerData.GoldPerSecond * (1f + statModifierEffect.ModifierValue);
+                return baseGold * (1f + statModifierEffect.ModifierValue);
             }
 
-            return towerData.GoldPerSecond;
+            return baseGold;
         }
     }
 }

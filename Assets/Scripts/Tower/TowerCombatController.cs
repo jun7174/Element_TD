@@ -110,7 +110,8 @@ namespace ElementTD
             ElementType currentElement = _towerBase.GetCurrentElement();
             float monsterResistanceMultiplier = target.GetResistanceMultiplier(currentElement);
             float totalMultiplier = damageMultiplier * _towerBase.BuffMultiplier;
-            float finalDamage = DamageCalculator.CalculateFinalDamage(towerData.BaseDamage, totalMultiplier, monsterResistanceMultiplier);
+            float baseDamage = _towerBase.GetUpgradedCoreValue();
+            float finalDamage = DamageCalculator.CalculateFinalDamage(baseDamage, totalMultiplier, monsterResistanceMultiplier);
 
             target.TakeDamage(finalDamage);
         }
