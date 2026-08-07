@@ -17,6 +17,9 @@ namespace ElementTD
         [SerializeField]
         private WaveSpawner _waveSpawner;
 
+        [SerializeField]
+        private TowerSelectionController _selectionController;
+
         private void Start()
         {
             LoadStage();
@@ -28,6 +31,7 @@ namespace ElementTD
             StageReferences stageReferences = stageInstance.GetComponent<StageReferences>();
 
             ElementTileQuery.CurrentOverlayTilemap = stageReferences.ElementOverlayTilemap;
+            _selectionController.SetBuildableAreaTilemap(stageReferences.BuildableAreaTilemap);
 
             _elementTileGenerator.Generate(stageReferences, _stageData.ElementTileRatio);
 

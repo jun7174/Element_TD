@@ -134,6 +134,15 @@ namespace ElementTD
             }
         }
 
+        // 지금 이 타워의 유효 사거리를 반환한다. 원소 효과로 사거리가 늘어난 상태라면 그 값이 반영된다.
+        // TowerRangeIndicator 등 외부에서 사거리를 표시할 때 사용한다.
+        public float GetEffectiveRange()
+        {
+            TowerDataSO towerData = _towerBase.TowerData;
+            ElementEffectSO currentEffect = _towerBase.GetCurrentElementEffect();
+            return CalculateEffectiveRange(towerData, currentEffect);
+        }
+
         private float CalculateEffectiveRange(TowerDataSO towerData, ElementEffectSO currentEffect)
         {
             if (currentEffect is StatModifierEffectSO statModifierEffect && statModifierEffect.TargetStat == TargetStat.Range)

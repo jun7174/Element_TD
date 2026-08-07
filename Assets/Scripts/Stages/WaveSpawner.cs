@@ -14,6 +14,14 @@ namespace ElementTD
         [SerializeField]
         private MonsterBase _monsterPrefab;
 
+        private int _currentWaveIndex = -1;
+
+        // 지금 진행 중인 웨이브의 인덱스이다. 아직 시작 전이면 -1이다.
+        public int CurrentWaveIndex => _currentWaveIndex;
+
+        // 현재 실행 중인 스테이지 데이터이다. NextWavePreviewUI 등 외부에서 웨이브 구성을 조회할 때 사용한다.
+        public StageDataSO CurrentStageData { get; private set; }
+
         public void StartStage(StageDataSO stageData, StageReferences stageReferences)
         {
             StartCoroutine(RunWaves(stageData, stageReferences));
@@ -21,8 +29,13 @@ namespace ElementTD
 
         private IEnumerator RunWaves(StageDataSO stageData, StageReferences stageReferences)
         {
-            foreach (WaveData wave in stageData.WaveSequence)
+            CurrentStageData = stageData;
+
+            for (int waveIndex = 0; waveIndex < stageData.WaveSequence.Count; waveIndex++)
             {
+                _currentWaveIndex = waveIndex;
+                WaveData wave = stageData.WaveSequence[waveIndex];
+
                 foreach (WaveMonsterEntry entry in wave.MonsterEntries)
                 {
                     for (int spawnedCount = 0; spawnedCount < entry.Count; spawnedCount++)
