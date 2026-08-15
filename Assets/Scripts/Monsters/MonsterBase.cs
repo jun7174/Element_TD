@@ -18,6 +18,7 @@ namespace ElementTD
 
         private MonsterDataSO _monsterData;
         private float _difficultyMultiplier = 1f;
+        private float _maxHealth;
         private float _currentHealth;
         private float _speedMultiplier = 1f;
 
@@ -26,6 +27,9 @@ namespace ElementTD
 
         // 난이도 배율이 반영된 처치 골드이다. 경제 시스템이 연결되면 이 값을 사용한다.
         public int GoldReward => Mathf.RoundToInt(_monsterData.GoldReward * _difficultyMultiplier);
+
+        // 현재 체력을 최대 체력으로 나눈 비율이다. 체력바 표시 등 외부에서 사용한다.
+        public float HealthRatio => _maxHealth > 0f ? _currentHealth / _maxHealth : 0f;
 
         private void OnEnable()
         {
@@ -48,7 +52,8 @@ namespace ElementTD
         {
             _monsterData = monsterData;
             _difficultyMultiplier = difficultyMultiplier;
-            _currentHealth = _monsterData.BaseHealth * _difficultyMultiplier;
+            _maxHealth = _monsterData.BaseHealth * _difficultyMultiplier;
+            _currentHealth = _maxHealth;
         }
 
         // 이동 경로를 설정한다. 목록의 첫 번째 지점부터 순서대로 통과한다.

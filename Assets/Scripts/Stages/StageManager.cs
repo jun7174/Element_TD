@@ -36,6 +36,8 @@ namespace ElementTD
             _elementTileGenerator.Generate(stageReferences, _stageData.ElementTileRatio);
 
             EconomyManager.Initialize(_stageData.StartingGold);
+            PlayerHealth.ResetHealth();
+            GameTimer.ResetTimer();
             Debug.Log("시작 골드 " + EconomyManager.CurrentGold);
 
             _waveSpawner.StartStage(_stageData, stageReferences);

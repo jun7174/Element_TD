@@ -1,6 +1,7 @@
 // Assets/Scripts/Towers/TowerSelectionController.cs
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 
@@ -47,6 +48,11 @@ namespace ElementTD
                 UpdateRelocationPreview();
             }
 
+            if (IsPointerOverUI())
+            {
+                return;
+            }
+
             if (Mouse.current.leftButton.wasPressedThisFrame)
             {
                 HandleLeftClick();
@@ -56,6 +62,13 @@ namespace ElementTD
             {
                 CancelPendingAction();
             }
+        }
+
+        // 지금 마우스 포인터가 UI 요소(버튼 등) 위에 있는지 확인한다.
+        // UI 위에서 일어난 클릭은 월드 클릭(선택, 배치, 재배치)으로 처리하지 않는다.
+        private bool IsPointerOverUI()
+        {
+            return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
         }
 
         // 상점 버튼이 눌렸을 때 호출한다. 다음 왼쪽 클릭에서 그 타워를 배치한다.
