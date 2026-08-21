@@ -15,6 +15,7 @@ namespace ElementTD
         private MonsterBase _monsterPrefab;
 
         private int _currentWaveIndex = -1;
+        private bool _skipRequested;
 
         // 지금 진행 중인 웨이브의 인덱스이다. 아직 시작 전이면 -1이다.
         public int CurrentWaveIndex => _currentWaveIndex;
@@ -27,12 +28,23 @@ namespace ElementTD
             StartCoroutine(RunWaves(stageData, stageReferences));
         }
 
+        // 웨이브 사이 대기시간을 건너뛴다. 대기 중이 아닐 때 호출해도 안전하게 무시된다.
+        public void SkipWaveDelay()
+        {
+            _skipRequested = true;
+        }
+
         private IEnumerator RunWaves(StageDataSO stageData, StageReferences stageReferences)
         {
             CurrentStageData = stageData;
 
             for (int waveIndex = 0; waveIndex < stageData.WaveSequence.Count; waveIndex++)
             {
+                if (waveIndex > 0)
+                {
+                    yield return WaitForNextWave(stageData.TimeBetweenWaves);
+                }
+
                 _currentWaveIndex = waveIndex;
                 WaveData wave = stageData.WaveSequence[waveIndex];
 
@@ -45,6 +57,21 @@ namespace ElementTD
                     }
                 }
             }
+        }
+
+        // 다음 웨이브까지 대기한다. 대기 중 SkipWaveDelay가 호출되면 즉시 종료한다.
+        // 대기가 시작되기 전에 미리 눌린 스킵 요청도 반영되도록, 대기 시작 시점이 아니라 종료 시점에 초기화한다.
+        private IEnumerator WaitForNextWave(float delay)
+        {
+            float elapsedTime = 0f;
+
+            while (elapsedTime < delay && !_skipRequested)
+            {
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            _skipRequested = false;
         }
 
         private void SpawnMonster(MonsterDataSO monsterData, float difficultyMultiplier, List<Transform> waypoints)

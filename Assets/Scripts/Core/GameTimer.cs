@@ -13,6 +13,11 @@ namespace ElementTD
 
         private void Update()
         {
+            if (GameSpeedManager.IsPaused)
+            {
+                return;
+            }
+
             ElapsedSeconds += Time.unscaledDeltaTime;
         }
 

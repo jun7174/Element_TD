@@ -40,5 +40,8 @@ namespace ElementTD
 
         [Tooltip("같은 웨이브 안에서 몬스터가 하나씩 스폰되는 간격이다. 단위는 초이다.")]
         public float SpawnInterval;
+
+        [Tooltip("웨이브가 끝난 후 다음 웨이브가 시작되기까지 대기하는 시간이다. 단위는 초이며, 웨이브 즉시 시작 버튼으로 건너뛸 수 있다.")]
+        public float TimeBetweenWaves = 5f;
     }
 }

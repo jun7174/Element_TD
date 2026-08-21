@@ -38,6 +38,7 @@ namespace ElementTD
             EconomyManager.Initialize(_stageData.StartingGold);
             PlayerHealth.ResetHealth();
             GameTimer.ResetTimer();
+            GameSpeedManager.ResetSpeed();
             Debug.Log("시작 골드 " + EconomyManager.CurrentGold);
 
             _waveSpawner.StartStage(_stageData, stageReferences);
