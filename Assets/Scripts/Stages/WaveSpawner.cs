@@ -23,6 +23,9 @@ namespace ElementTD
         // 현재 실행 중인 스테이지 데이터이다. NextWavePreviewUI 등 외부에서 웨이브 구성을 조회할 때 사용한다.
         public StageDataSO CurrentStageData { get; private set; }
 
+        // 마지막 웨이브까지 스폰이 전부 끝났는지 여부이다. 클리어 판정에 사용한다.
+        public bool IsSpawningComplete { get; private set; }
+
         public void StartStage(StageDataSO stageData, StageReferences stageReferences)
         {
             StartCoroutine(RunWaves(stageData, stageReferences));
@@ -37,6 +40,7 @@ namespace ElementTD
         private IEnumerator RunWaves(StageDataSO stageData, StageReferences stageReferences)
         {
             CurrentStageData = stageData;
+            IsSpawningComplete = false;
 
             for (int waveIndex = 0; waveIndex < stageData.WaveSequence.Count; waveIndex++)
             {
@@ -57,6 +61,8 @@ namespace ElementTD
                     }
                 }
             }
+
+            IsSpawningComplete = true;
         }
 
         // 다음 웨이브까지 대기한다. 대기 중 SkipWaveDelay가 호출되면 즉시 종료한다.

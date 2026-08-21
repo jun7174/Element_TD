@@ -1,5 +1,7 @@
 // Assets/Scripts/Core/EconomyManager.cs
 
+using UnityEngine;
+
 namespace ElementTD
 {
     // 게임 전체의 골드를 관리한다.
@@ -13,9 +15,10 @@ namespace ElementTD
             CurrentGold = startingGold;
         }
 
+        // 골드를 더하거나(양수) 뺀다(음수). 결과가 0 미만으로 내려가지 않게 제한한다.
         public static void AddGold(int amount)
         {
-            CurrentGold += amount;
+            CurrentGold = Mathf.Max(0, CurrentGold + amount);
         }
 
         // 비용을 지불할 수 있으면 차감하고 true를 반환한다.

@@ -18,9 +18,16 @@ namespace ElementTD
             CurrentHealth = DefaultMaxHealth;
         }
 
+        // 치트 등 외부 요청으로 생명력을 더하거나(양수) 뺀다(음수).
+        // 0에서 최대 생명력 사이로 값을 제한한다.
+        public static void AddHealth(int amount)
+        {
+            CurrentHealth = Mathf.Clamp(CurrentHealth + amount, 0, DefaultMaxHealth);
+        }
+
         public static void TakeDamage(int amount)
         {
-            CurrentHealth -= amount;
+            CurrentHealth = Mathf.Max(0, CurrentHealth - amount);
             Debug.Log("플레이어 생명력 감소, 남은 생명력 " + CurrentHealth);
 
             if (CurrentHealth <= 0)

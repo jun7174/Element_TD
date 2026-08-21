@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a54ecc122a3d2a4aa954b887b1c8d4d, type: 3}
+  m_Name: NewElementColorPalette
+  m_EditorClassIdentifier: Assembly-CSharp::ElementTD.ElementColorPaletteSO
+  WaterColor: {r: 0.3, g: 0.55, b: 1, a: 1}
+  FireColor: {r: 1, g: 0.5, b: 0.1, a: 1}
+  GrassColor: {r: 0.3, g: 0.8, b: 0.3, a: 1}
+  DarkColor: {r: 0.6, g: 0.25, b: 0.85, a: 1}
+  LightColor: {r: 1, g: 0.85, b: 0.2, a: 1}
+  NoneColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}

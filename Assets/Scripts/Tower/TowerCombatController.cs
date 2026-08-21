@@ -97,15 +97,15 @@ namespace ElementTD
                 damageMultiplier *= DamageCalculator.CriticalHitMultiplier;
             }
 
-            ApplyDamageTo(target, towerData, damageMultiplier);
+            ApplyDamageTo(target, towerData, damageMultiplier, isCriticalHit);
 
             if (towerData.AttackPattern == AttackPatternType.Splash)
             {
-                ApplySplashDamage(target, towerData, damageMultiplier);
+                ApplySplashDamage(target, towerData, damageMultiplier, isCriticalHit);
             }
         }
 
-        private void ApplyDamageTo(MonsterBase target, TowerDataSO towerData, float damageMultiplier)
+        private void ApplyDamageTo(MonsterBase target, TowerDataSO towerData, float damageMultiplier, bool isCriticalHit)
         {
             ElementType currentElement = _towerBase.GetCurrentElement();
             float monsterResistanceMultiplier = target.GetResistanceMultiplier(currentElement);
@@ -114,9 +114,10 @@ namespace ElementTD
             float finalDamage = DamageCalculator.CalculateFinalDamage(baseDamage, totalMultiplier, monsterResistanceMultiplier);
 
             target.TakeDamage(finalDamage);
+            FloatingDamageTextSpawner.Spawn(target.transform.position, finalDamage, currentElement, isCriticalHit);
         }
 
-        private void ApplySplashDamage(MonsterBase primaryTarget, TowerDataSO towerData, float damageMultiplier)
+        private void ApplySplashDamage(MonsterBase primaryTarget, TowerDataSO towerData, float damageMultiplier, bool isCriticalHit)
         {
             foreach (MonsterBase monster in MonsterBase.ActiveMonsters)
             {
@@ -129,7 +130,7 @@ namespace ElementTD
 
                 if (distance <= towerData.SplashRadius)
                 {
-                    ApplyDamageTo(monster, towerData, damageMultiplier);
+                    ApplyDamageTo(monster, towerData, damageMultiplier, isCriticalHit);
                 }
             }
         }

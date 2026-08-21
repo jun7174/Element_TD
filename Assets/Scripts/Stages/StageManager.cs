@@ -20,6 +20,9 @@ namespace ElementTD
         [SerializeField]
         private TowerSelectionController _selectionController;
 
+        [SerializeField]
+        private GameOverClearController _gameOverClearController;
+
         private void Start()
         {
             LoadStage();
@@ -39,6 +42,7 @@ namespace ElementTD
             PlayerHealth.ResetHealth();
             GameTimer.ResetTimer();
             GameSpeedManager.ResetSpeed();
+            _gameOverClearController.ResetGameEndState();
             Debug.Log("시작 골드 " + EconomyManager.CurrentGold);
 
             _waveSpawner.StartStage(_stageData, stageReferences);

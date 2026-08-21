@@ -8,7 +8,9 @@ using UnityEngine.Tilemaps;
 namespace ElementTD
 {
     // 마우스 클릭으로 타워를 선택하거나, 대기 중인 구매 또는 재배치를 확정한다.
-    // 왼쪽 클릭으로 확정하고, 오른쪽 클릭으로 대기 중인 동작을 취소한다.
+    // 왼쪽 클릭으로 확정하고, 오른쪽 클릭이나 잘못된 칸 클릭(설치 불가 구역, 중복,
+    // 재배치의 경우 현재 위치와 동일한 칸)으로 대기 중인 동작을 취소한다.
+    // 확정된 위치는 항상 타일 중앙으로 스냅된다.
     public class TowerSelectionController : MonoBehaviour
     {
         private const float ClickSelectRadius = 0.3f;
@@ -19,11 +21,13 @@ namespace ElementTD
         [SerializeField]
         private TowerRelocationController _relocationController;
 
-        private Tilemap _buildableAreaTilemap;
-
         [SerializeField]
         private PlacementRangePreview _placementPreview;
 
+        [SerializeField]
+        private TowerPlacementSpritePreview _spritePreview;
+
+        private Tilemap _buildableAreaTilemap;
         private TowerBase _selectedTower;
         private TowerBase _pendingPurchasePrefab;
         private bool _isPendingRelocation;
@@ -128,52 +132,119 @@ namespace ElementTD
             _pendingPurchasePrefab = null;
             _isPendingRelocation = false;
             _placementPreview.Hide();
+            _spritePreview.Hide();
         }
 
         private void ConfirmPurchase(Vector2 worldPosition)
         {
-            if (!IsBuildable(worldPosition))
+            Vector3Int cellPosition = _buildableAreaTilemap.WorldToCell(worldPosition);
+
+            if (!IsValidPlacementCell(cellPosition, null))
             {
-                Debug.Log("설치 가능한 칸이 아니다");
+                Debug.Log("설치할 수 없는 칸이라 구매를 취소한다");
+                CancelPendingAction();
                 return;
             }
 
-            _tradeController.TryPurchaseAndPlace(_pendingPurchasePrefab, worldPosition);
+            Vector3 centerPosition = _buildableAreaTilemap.GetCellCenterWorld(cellPosition);
+            _tradeController.TryPurchaseAndPlace(_pendingPurchasePrefab, centerPosition);
             _pendingPurchasePrefab = null;
             _placementPreview.Hide();
+            _spritePreview.Hide();
         }
 
         private void ConfirmRelocation(Vector2 worldPosition)
         {
-            if (!IsBuildable(worldPosition))
+            Vector3Int cellPosition = _buildableAreaTilemap.WorldToCell(worldPosition);
+            Vector3Int currentCell = _buildableAreaTilemap.WorldToCell(_selectedTower.transform.position);
+
+            if (cellPosition == currentCell)
             {
-                Debug.Log("설치 가능한 칸이 아니다");
+                Debug.Log("현재 위치와 같은 칸이라 재배치를 취소한다");
+                CancelPendingAction();
                 return;
             }
 
-            _relocationController.TryRelocate(_selectedTower, worldPosition);
+            if (!IsValidPlacementCell(cellPosition, _selectedTower))
+            {
+                Debug.Log("재배치할 수 없는 칸이라 재배치를 취소한다");
+                CancelPendingAction();
+                return;
+            }
+
+            Vector3 centerPosition = _buildableAreaTilemap.GetCellCenterWorld(cellPosition);
+            _relocationController.TryRelocate(_selectedTower, centerPosition);
             _isPendingRelocation = false;
             _placementPreview.Hide();
+            _spritePreview.Hide();
         }
 
-        private bool IsBuildable(Vector2 worldPosition)
+        // 설치 가능 구역이면서 다른 타워가 없는 칸인지 확인한다.
+        // excludeTower로 넘긴 타워는 중복 판정에서 제외한다 (재배치 시 자기 자신 제외용).
+        private bool IsValidPlacementCell(Vector3Int cellPosition, TowerBase excludeTower)
         {
-            Vector3Int cellPosition = _buildableAreaTilemap.WorldToCell(worldPosition);
-            return _buildableAreaTilemap.HasTile(cellPosition);
+            if (!_buildableAreaTilemap.HasTile(cellPosition))
+            {
+                return false;
+            }
+
+            if (IsCellOccupied(cellPosition, excludeTower))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool IsCellOccupied(Vector3Int cellPosition, TowerBase excludeTower)
+        {
+            foreach (TowerBase tower in TowerBase.ActiveTowers)
+            {
+                if (tower == excludeTower)
+                {
+                    continue;
+                }
+
+                Vector3Int towerCell = _buildableAreaTilemap.WorldToCell(tower.transform.position);
+
+                if (towerCell == cellPosition)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void UpdatePurchasePreview()
         {
             Vector2 worldPosition = GetMouseWorldPosition();
+            Vector3Int cellPosition = _buildableAreaTilemap.WorldToCell(worldPosition);
+            Vector3 centerPosition = _buildableAreaTilemap.GetCellCenterWorld(cellPosition);
             float radius = GetTowerDisplayRadius(_pendingPurchasePrefab.TowerData);
-            _placementPreview.Show(worldPosition, radius);
+            bool isValid = IsValidPlacementCell(cellPosition, null);
+
+            _placementPreview.Show(centerPosition, radius);
+            _spritePreview.Show(centerPosition, GetTowerSprite(_pendingPurchasePrefab), isValid);
         }
 
         private void UpdateRelocationPreview()
         {
             Vector2 worldPosition = GetMouseWorldPosition();
+            Vector3Int cellPosition = _buildableAreaTilemap.WorldToCell(worldPosition);
+            Vector3 centerPosition = _buildableAreaTilemap.GetCellCenterWorld(cellPosition);
+            Vector3Int currentCell = _buildableAreaTilemap.WorldToCell(_selectedTower.transform.position);
             float radius = GetTowerDisplayRadius(_selectedTower.TowerData);
-            _placementPreview.Show(worldPosition, radius);
+            bool isValid = cellPosition != currentCell && IsValidPlacementCell(cellPosition, _selectedTower);
+
+            _placementPreview.Show(centerPosition, radius);
+            _spritePreview.Show(centerPosition, GetTowerSprite(_selectedTower), isValid);
+        }
+
+        private Sprite GetTowerSprite(TowerBase tower)
+        {
+            SpriteRenderer spriteRenderer = tower.GetComponent<SpriteRenderer>();
+            return spriteRenderer != null ? spriteRenderer.sprite : null;
         }
 
         private float GetTowerDisplayRadius(TowerDataSO towerData)
