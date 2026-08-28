@@ -21,7 +21,8 @@ MonoBehaviour:
   AttackRange: 0
   AttackPattern: 0
   TargetingStrategy: {fileID: 0}
+  ProjectilePrefab: {fileID: 0}
   SplashRadius: 0
   EffectRadius: 5
-  EffectAmount: 5
+  EffectAmount: 0.5
   GoldPerSecond: 0

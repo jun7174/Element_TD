@@ -20,7 +20,7 @@ namespace ElementTD
         private float _difficultyMultiplier = 1f;
         private float _maxHealth;
         private float _currentHealth;
-        private float _speedMultiplier = 1f;
+        private readonly Dictionary<AuraEffect, float> _speedDebuffContributions = new Dictionary<AuraEffect, float>();
 
         private List<Transform> _path;
         private int _currentWaypointIndex;
@@ -30,6 +30,23 @@ namespace ElementTD
 
         // 현재 체력을 최대 체력으로 나눈 비율이다. 체력바 표시 등 외부에서 사용한다.
         public float HealthRatio => _maxHealth > 0f ? _currentHealth / _maxHealth : 0f;
+
+        // 걸려있는 모든 감속 오라의 기여분을 곱해서 누적한 최종 배율이다.
+        // 곱셈으로 누적하면 아무리 많이 겹쳐도 수학적으로 0 이하가 될 수 없다.
+        private float SpeedMultiplier
+        {
+            get
+            {
+                float multiplier = 1f;
+
+                foreach (float amount in _speedDebuffContributions.Values)
+                {
+                    multiplier *= 1f - amount;
+                }
+
+                return multiplier;
+            }
+        }
 
         private void OnEnable()
         {
@@ -72,7 +89,7 @@ namespace ElementTD
 
             Transform currentWaypoint = _path[_currentWaypointIndex];
             Vector3 direction = (currentWaypoint.position - transform.position).normalized;
-            float currentSpeed = _monsterData.BaseMoveSpeed * _speedMultiplier;
+            float currentSpeed = _monsterData.BaseMoveSpeed * SpeedMultiplier;
             transform.position += direction * currentSpeed * Time.deltaTime;
 
             float distanceToWaypoint = Vector2.Distance(transform.position, currentWaypoint.position);
@@ -112,16 +129,17 @@ namespace ElementTD
             return 1f;
         }
 
-        // 구속타워 오라로부터 이동속도 감소 디버프를 받는다.
-        public void ApplySpeedDebuff(float amount)
+        // source 오라가 이 몬스터에게 거는 이동속도 감소 수치를 갱신한다.
+        // 매 프레임 다시 호출해도 같은 오라의 항목은 하나만 유지되며 값만 최신으로 덮어써진다.
+        public void ApplySpeedDebuff(AuraEffect source, float amount)
         {
-            _speedMultiplier = 1f - amount;
+            _speedDebuffContributions[source] = amount;
         }
 
-        // 디버프 범위를 벗어나면 호출되어 이동속도 감소를 해제한다.
-        public void RemoveSpeedDebuff()
+        // source 오라의 감속 기여분을 제거한다. 다른 오라의 기여분은 영향받지 않는다.
+        public void RemoveSpeedDebuff(AuraEffect source)
         {
-            _speedMultiplier = 1f;
+            _speedDebuffContributions.Remove(source);
         }
 
         // 데미지를 받아 체력을 감소시킨다.

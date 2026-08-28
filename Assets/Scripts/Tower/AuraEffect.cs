@@ -23,6 +23,31 @@ namespace ElementTD
             _towerBase = GetComponent<TowerBase>();
         }
 
+        private void OnDisable()
+        {
+            // 이 오라 자신이 판매되거나 파괴될 때, 지금까지 걸어둔 기여분을 전부 제거한다.
+            // 이걸 안 하면 오라의 근원이 사라져도 이미 걸린 효과가 영구히 남는 버그가 생긴다.
+            foreach (TowerBase tower in _buffedTowers)
+            {
+                if (tower != null)
+                {
+                    tower.RemoveBuff(this);
+                }
+            }
+
+            _buffedTowers.Clear();
+
+            foreach (MonsterBase monster in _debuffedMonsters)
+            {
+                if (monster != null)
+                {
+                    monster.RemoveSpeedDebuff(this);
+                }
+            }
+
+            _debuffedMonsters.Clear();
+        }
+
         private void Update()
         {
             if (_mode == AuraMode.Buff)
@@ -38,12 +63,17 @@ namespace ElementTD
         private void UpdateBuff()
         {
             List<TowerBase> targetsInRange = FindTowersInRange();
+            float currentAmount = _towerBase.GetUpgradedCoreValue();
 
+            // 범위 안 대상에게 매 프레임 최신 수치를 다시 걸어준다.
+            // ApplyBuff는 이 오라(this)를 키로 값을 덮어쓸 뿐이라, 반복 호출해도 항목이 늘어나지 않고
+            // 강화로 수치가 바뀌면 다음 프레임부터 바로 반영된다.
             foreach (TowerBase tower in targetsInRange)
             {
+                tower.ApplyBuff(this, currentAmount);
+
                 if (!_buffedTowers.Contains(tower))
                 {
-                    tower.ApplyBuff(_towerBase.GetUpgradedCoreValue());
                     _buffedTowers.Add(tower);
                 }
             }
@@ -54,7 +84,7 @@ namespace ElementTD
 
                 if (!targetsInRange.Contains(buffedTower))
                 {
-                    buffedTower.RemoveBuff();
+                    buffedTower.RemoveBuff(this);
                     _buffedTowers.RemoveAt(index);
                 }
             }
@@ -63,12 +93,14 @@ namespace ElementTD
         private void UpdateDebuff()
         {
             List<MonsterBase> targetsInRange = FindMonstersInRange();
+            float currentAmount = _towerBase.GetUpgradedCoreValue();
 
             foreach (MonsterBase monster in targetsInRange)
             {
+                monster.ApplySpeedDebuff(this, currentAmount);
+
                 if (!_debuffedMonsters.Contains(monster))
                 {
-                    monster.ApplySpeedDebuff(_towerBase.GetUpgradedCoreValue());
                     _debuffedMonsters.Add(monster);
                 }
             }
@@ -85,7 +117,7 @@ namespace ElementTD
 
                 if (!targetsInRange.Contains(debuffedMonster))
                 {
-                    debuffedMonster.RemoveSpeedDebuff();
+                    debuffedMonster.RemoveSpeedDebuff(this);
                     _debuffedMonsters.RemoveAt(index);
                 }
             }

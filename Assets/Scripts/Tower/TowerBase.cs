@@ -22,12 +22,27 @@ namespace ElementTD
         private List<ElementDataSO> _elementDataList;
 
         private ElementSynergyEvaluator _synergyEvaluator;
-        private float _buffMultiplier = 1f;
+        private readonly Dictionary<AuraEffect, float> _buffContributions = new Dictionary<AuraEffect, float>();
         private TowerUpgradeState _upgradeState = TowerUpgradeState.Base;
 
         public TowerDataSO TowerData => _towerData;
-        public float BuffMultiplier => _buffMultiplier;
         public TowerUpgradeState UpgradeState => _upgradeState;
+
+        // 지금 이 타워에 걸린 모든 버프 오라의 기여분을 더한 최종 배율이다.
+        public float BuffMultiplier
+        {
+            get
+            {
+                float totalBonus = 0f;
+
+                foreach (float amount in _buffContributions.Values)
+                {
+                    totalBonus += amount;
+                }
+
+                return 1f + totalBonus;
+            }
+        }
 
         private void Awake()
         {
@@ -65,16 +80,17 @@ namespace ElementTD
             return _synergyEvaluator.GetEffect(currentElement, _towerData.Type);
         }
 
-        // 지휘타워 오라로부터 공격력 버프를 받는다.
-        public void ApplyBuff(float amount)
+        // source 오라가 이 타워에게 거는 버프 수치를 갱신한다.
+        // 매 프레임 다시 호출해도 같은 오라의 항목은 하나만 유지되며 값만 최신으로 덮어써진다.
+        public void ApplyBuff(AuraEffect source, float amount)
         {
-            _buffMultiplier = 1f + amount;
+            _buffContributions[source] = amount;
         }
 
-        // 버프 범위를 벗어나면 호출되어 버프를 해제한다.
-        public void RemoveBuff()
+        // source 오라의 버프 기여분을 제거한다. 다른 오라의 기여분은 영향받지 않는다.
+        public void RemoveBuff(AuraEffect source)
         {
-            _buffMultiplier = 1f;
+            _buffContributions.Remove(source);
         }
 
         // TowerUpgradeController가 강화 성공 시 호출해서 강화 상태를 변경한다.

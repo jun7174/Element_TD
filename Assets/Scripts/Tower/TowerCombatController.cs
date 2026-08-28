@@ -73,7 +73,16 @@ namespace ElementTD
             return candidates;
         }
 
+        // 발사 시점에 확정되는 데미지 정보(AttackPayload)를 만들고, 공격 패턴에 맞는 방식으로 발사한다.
         private void PerformAttack(MonsterBase target, TowerDataSO towerData, ElementEffectSO currentEffect)
+        {
+            AttackPayload payload = BuildAttackPayload(towerData, currentEffect);
+            LaunchAttack(target, towerData, payload);
+        }
+
+        // 강화 수치, 원소 효과 배율, 버프 배율, 치명타 여부를 전부 반영해서 데미지 정보를 확정한다.
+        // 이후 대상이 바뀌거나(가로채기) 시간이 지나도 이 값 자체는 변하지 않는다.
+        private AttackPayload BuildAttackPayload(TowerDataSO towerData, ElementEffectSO currentEffect)
         {
             float damageMultiplier = 1f;
             float critChance = 0f;
@@ -97,42 +106,34 @@ namespace ElementTD
                 damageMultiplier *= DamageCalculator.CriticalHitMultiplier;
             }
 
-            ApplyDamageTo(target, towerData, damageMultiplier, isCriticalHit);
+            float totalMultiplier = damageMultiplier * _towerBase.BuffMultiplier;
+            float finalBaseDamage = _towerBase.GetUpgradedCoreValue() * totalMultiplier;
+            ElementType currentElement = _towerBase.GetCurrentElement();
+
+            return new AttackPayload(finalBaseDamage, currentElement, isCriticalHit);
+        }
+
+        // 공격 패턴에 따라 즉시 명중(저격), 고정 좌표로 날아가는 투사체(범위), 유도 투사체(기본, 연사) 중 하나로 발사한다.
+        private void LaunchAttack(MonsterBase target, TowerDataSO towerData, AttackPayload payload)
+        {
+            if (towerData.AttackPattern == AttackPatternType.Sniper)
+            {
+                SniperTracerSpawner.Spawn(transform.position, target.transform.position);
+                payload.ApplyTo(target);
+                return;
+            }
 
             if (towerData.AttackPattern == AttackPatternType.Splash)
             {
-                ApplySplashDamage(target, towerData, damageMultiplier, isCriticalHit);
+                GameObject projectileObject = Instantiate(towerData.ProjectilePrefab, transform.position, Quaternion.identity);
+                SlowProjectile slowProjectile = projectileObject.GetComponent<SlowProjectile>();
+                slowProjectile.Launch(target.transform.position, towerData.SplashRadius, payload);
+                return;
             }
-        }
 
-        private void ApplyDamageTo(MonsterBase target, TowerDataSO towerData, float damageMultiplier, bool isCriticalHit)
-        {
-            ElementType currentElement = _towerBase.GetCurrentElement();
-            float monsterResistanceMultiplier = target.GetResistanceMultiplier(currentElement);
-            float totalMultiplier = damageMultiplier * _towerBase.BuffMultiplier;
-            float baseDamage = _towerBase.GetUpgradedCoreValue();
-            float finalDamage = DamageCalculator.CalculateFinalDamage(baseDamage, totalMultiplier, monsterResistanceMultiplier);
-
-            target.TakeDamage(finalDamage);
-            FloatingDamageTextSpawner.Spawn(target.transform.position, finalDamage, currentElement, isCriticalHit);
-        }
-
-        private void ApplySplashDamage(MonsterBase primaryTarget, TowerDataSO towerData, float damageMultiplier, bool isCriticalHit)
-        {
-            foreach (MonsterBase monster in MonsterBase.ActiveMonsters)
-            {
-                if (monster == primaryTarget)
-                {
-                    continue;
-                }
-
-                float distance = Vector2.Distance(primaryTarget.transform.position, monster.transform.position);
-
-                if (distance <= towerData.SplashRadius)
-                {
-                    ApplyDamageTo(monster, towerData, damageMultiplier, isCriticalHit);
-                }
-            }
+            GameObject homingObject = Instantiate(towerData.ProjectilePrefab, transform.position, Quaternion.identity);
+            HomingProjectile homingProjectile = homingObject.GetComponent<HomingProjectile>();
+            homingProjectile.Launch(target, payload);
         }
 
         // 지금 이 타워의 유효 사거리를 반환한다. 원소 효과로 사거리가 늘어난 상태라면 그 값이 반영된다.

@@ -21,7 +21,8 @@ MonoBehaviour:
   AttackRange: 5
   AttackPattern: 2
   TargetingStrategy: {fileID: 11400000, guid: f36280c15887a894e9e10f0f3788d67d, type: 2}
-  SplashRadius: 0.3
+  ProjectilePrefab: {fileID: 5408808477585285240, guid: 53c63e7eee2df9c4d96d0cf840f5cc4f, type: 3}
+  SplashRadius: 1
   EffectRadius: 0
   EffectAmount: 0
   GoldPerSecond: 0

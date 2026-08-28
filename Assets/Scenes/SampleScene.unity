@@ -4457,6 +4457,7 @@ GameObject:
   - component: {fileID: 1375056402}
   - component: {fileID: 1375056403}
   - component: {fileID: 1375056404}
+  - component: {fileID: 1375056405}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -4639,6 +4640,19 @@ MonoBehaviour:
   _waveSpawner: {fileID: 1375056393}
   _resultPanel: {fileID: 1370362439}
   _resultText: {fileID: 715372871}
+--- !u!114 &1375056405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1375056391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71a245fc941aaee47a52838b323d0d85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ElementTD.SniperTracerSpawner
+  _tracerPrefab: {fileID: 3309180976030137848, guid: 9d71c3ea7d0dc574f8577d27a3165ff9, type: 3}
 --- !u!1 &1384053880
 GameObject:
   m_ObjectHideFlags: 0
