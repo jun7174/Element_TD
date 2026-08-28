@@ -80,12 +80,13 @@ namespace ElementTD
             LaunchAttack(target, towerData, payload);
         }
 
-        // 강화 수치, 원소 효과 배율, 버프 배율, 치명타 여부를 전부 반영해서 데미지 정보를 확정한다.
+        // 강화 수치, 원소 효과 배율, 버프 배율, 치명타 여부, 방어관통 비율을 전부 반영해서 데미지 정보를 확정한다.
         // 이후 대상이 바뀌거나(가로채기) 시간이 지나도 이 값 자체는 변하지 않는다.
         private AttackPayload BuildAttackPayload(TowerDataSO towerData, ElementEffectSO currentEffect)
         {
             float damageMultiplier = 1f;
             float critChance = 0f;
+            float armorPenetrationRatio = 0f;
 
             if (currentEffect is StatModifierEffectSO statModifierEffect)
             {
@@ -96,6 +97,10 @@ namespace ElementTD
                 else if (statModifierEffect.TargetStat == TargetStat.CritChance)
                 {
                     critChance = statModifierEffect.ModifierValue;
+                }
+                else if (statModifierEffect.TargetStat == TargetStat.ArmorPenetration)
+                {
+                    armorPenetrationRatio = statModifierEffect.ModifierValue;
                 }
             }
 
@@ -110,7 +115,7 @@ namespace ElementTD
             float finalBaseDamage = _towerBase.GetUpgradedCoreValue() * totalMultiplier;
             ElementType currentElement = _towerBase.GetCurrentElement();
 
-            return new AttackPayload(finalBaseDamage, currentElement, isCriticalHit);
+            return new AttackPayload(finalBaseDamage, currentElement, isCriticalHit, armorPenetrationRatio);
         }
 
         // 공격 패턴에 따라 즉시 명중(저격), 고정 좌표로 날아가는 투사체(범위), 유도 투사체(기본, 연사) 중 하나로 발사한다.

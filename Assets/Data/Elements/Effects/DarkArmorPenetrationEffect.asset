@@ -15,4 +15,4 @@ MonoBehaviour:
   EffectName: DarkArmorPenetrationEffect
   EffectDescription: "\uC554\uD751\uC6D0\uC18C_\uBC29\uC5B4\uAD00\uD1B5\uC99D\uAC00"
   TargetStat: 2
-  ModifierValue: 0.1
+  ModifierValue: 0.5

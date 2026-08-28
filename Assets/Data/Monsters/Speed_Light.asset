@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b948265b97b8784cb56db1e39ac34f9, type: 3}
   m_Name: Speed_Light
   m_EditorClassIdentifier: Assembly-CSharp::ElementTD.MonsterDataSO
+  Element: 5
   BaseHealth: 15
   BaseMoveSpeed: 2
-  ElementResistances:
-  - Element: 4
-    DamageMultiplier: 1.5
-  - Element: 5
-    DamageMultiplier: 0.5
+  UseAutomaticResistances: 1
+  ElementResistances: []
   GoldReward: 2
   DamageToPlayer: 1
+  Defense: 0
   IsCrowdControlImmune: 0
   IsBoss: 0

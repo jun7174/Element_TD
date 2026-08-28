@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b948265b97b8784cb56db1e39ac34f9, type: 3}
   m_Name: _Boss
   m_EditorClassIdentifier: Assembly-CSharp::ElementTD.MonsterDataSO
+  Element: 0
   BaseHealth: 500
   BaseMoveSpeed: 0.8
+  UseAutomaticResistances: 0
   ElementResistances:
   - Element: 0
     DamageMultiplier: 1.2
   GoldReward: 40
   DamageToPlayer: 20
+  Defense: 8
   IsCrowdControlImmune: 1
   IsBoss: 1

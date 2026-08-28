@@ -22,6 +22,13 @@ namespace ElementTD
         private float _currentHealth;
         private readonly Dictionary<AuraEffect, float> _speedDebuffContributions = new Dictionary<AuraEffect, float>();
 
+        [Tooltip("MonsterDataSO.UseAutomaticResistances가 켜진 몬스터의 저항/약점을 계산할 때 사용하는 규칙이다.")]
+        [SerializeField]
+        private MonsterElementRulesSO _elementRules;
+
+        [SerializeField]
+        private MonsterSpriteColorApplier _spriteColorApplier;
+
         private List<Transform> _path;
         private int _currentWaypointIndex;
 
@@ -30,6 +37,9 @@ namespace ElementTD
 
         // 현재 체력을 최대 체력으로 나눈 비율이다. 체력바 표시 등 외부에서 사용한다.
         public float HealthRatio => _maxHealth > 0f ? _currentHealth / _maxHealth : 0f;
+
+        // 이 몬스터의 방어력이다. 데미지 계산 시 방어관통 비율만큼 무시된 뒤 고정 수치로 차감된다.
+        public float Defense => _monsterData.Defense;
 
         // 걸려있는 모든 감속 오라의 기여분을 곱해서 누적한 최종 배율이다.
         // 곱셈으로 누적하면 아무리 많이 겹쳐도 수학적으로 0 이하가 될 수 없다.
@@ -64,13 +74,18 @@ namespace ElementTD
         }
 
         // 스폰 시점에 몬스터 데이터와 난이도 배율을 주입받는다.
-        // 체력은 기본 체력에 난이도 배율을 곱한 값으로 초기화된다.
+        // 체력은 기본 체력에 난이도 배율을 곱한 값으로 초기화되고, 스프라이트 색도 이 시점에 같이 적용된다.
         public void Initialize(MonsterDataSO monsterData, float difficultyMultiplier)
         {
             _monsterData = monsterData;
             _difficultyMultiplier = difficultyMultiplier;
             _maxHealth = _monsterData.BaseHealth * _difficultyMultiplier;
             _currentHealth = _maxHealth;
+
+            if (_spriteColorApplier != null)
+            {
+                _spriteColorApplier.ApplyColor(_monsterData.Element);
+            }
         }
 
         // 이동 경로를 설정한다. 목록의 첫 번째 지점부터 순서대로 통과한다.
@@ -113,9 +128,15 @@ namespace ElementTD
         }
 
         // 원소 공격을 받았을 때 적용되는 배율을 반환한다.
-        // 저항 목록에 해당 원소 항목이 없으면 일반 배율인 1을 반환한다.
+        // UseAutomaticResistances가 켜져 있으면 MonsterElementRulesSO의 규칙으로 계산하고,
+        // 꺼져 있으면 수동으로 채운 저항 목록을 사용한다 (목록에 없는 원소는 일반 배율 1).
         public float GetResistanceMultiplier(ElementType attackElement)
         {
+            if (_monsterData.UseAutomaticResistances)
+            {
+                return _elementRules.GetMultiplier(_monsterData.Element, attackElement);
+            }
+
             List<ElementResistanceEntry> resistances = _monsterData.ElementResistances;
 
             foreach (ElementResistanceEntry entry in resistances)

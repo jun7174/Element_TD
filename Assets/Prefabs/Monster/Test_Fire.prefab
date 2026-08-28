@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6712316580341090469}
   - component: {fileID: 1157269227421932811}
   - component: {fileID: 5953022752520974967}
+  - component: {fileID: -9181997743088290264}
   m_Layer: 0
   m_Name: Test_Fire
   m_TagString: Untagged
@@ -86,7 +87,7 @@ SpriteRenderer:
   m_SortingOrder: 10
   m_MaskInteraction: 0
   m_Sprite: {fileID: 5268096014038210963, guid: 701ce7516b542a44ea2c8b13549d8e6d, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -107,6 +108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72daaede3a69c5841b29e0a01beb1f09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ElementTD.MonsterBase
+  _elementRules: {fileID: 11400000, guid: c5a65717bb669e249b0f31fe7b875cc5, type: 2}
+  _spriteColorApplier: {fileID: -9181997743088290264}
 --- !u!114 &5953022752520974967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,6 +124,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ElementTD.MonsterHealthBar
   _fillBar: {fileID: 1214948223891704602}
   _backgroundBar: {fileID: 6057266683739183571}
+--- !u!114 &-9181997743088290264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811185744091495721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4631f5e562cfab43927b2b562923de5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ElementTD.MonsterSpriteColorApplier
+  _colorPalette: {fileID: 11400000, guid: d89ca333872f357458dc6720b13de103, type: 2}
 --- !u!1 &6070609914825815170
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,24 +16,22 @@ MonoBehaviour:
   ElementTileRatio: 0.35
   WaveSequence:
   - MonsterEntries:
+    - Monster: {fileID: 11400000, guid: e2d48903783e7114ba66af06f9b9d0cf, type: 2}
+      Count: 1
     - Monster: {fileID: 11400000, guid: 23dc7e29ca058d0459bae7d65d084142, type: 2}
-      Count: 5
+      Count: 1
+    - Monster: {fileID: 11400000, guid: 9b770cb50ad378345bee3ade2baeb866, type: 2}
+      Count: 1
+    - Monster: {fileID: 11400000, guid: 91aed55bc6d67a74bae00a16aab29a5d, type: 2}
+      Count: 1
     - Monster: {fileID: 11400000, guid: a3b3b353813990741a894d4fcc90c40f, type: 2}
-      Count: 10
+      Count: 1
   - MonsterEntries:
-    - Monster: {fileID: 11400000, guid: 23dc7e29ca058d0459bae7d65d084142, type: 2}
-      Count: 5
-    - Monster: {fileID: 11400000, guid: a3b3b353813990741a894d4fcc90c40f, type: 2}
-      Count: 10
-    - Monster: {fileID: 11400000, guid: dc83ca308cac2f241a11b5a92da7d322, type: 2}
-      Count: 15
+    - Monster: {fileID: 11400000, guid: 44e120c583dcb2c4ba48f1ff6dd7f0b5, type: 2}
+      Count: 20
   - MonsterEntries:
-    - Monster: {fileID: 11400000, guid: 23dc7e29ca058d0459bae7d65d084142, type: 2}
-      Count: 15
-    - Monster: {fileID: 11400000, guid: a3b3b353813990741a894d4fcc90c40f, type: 2}
-      Count: 15
-    - Monster: {fileID: 11400000, guid: dc83ca308cac2f241a11b5a92da7d322, type: 2}
-      Count: 15
+    - Monster: {fileID: 11400000, guid: 045f224c5426efe4783d8052142e6fb6, type: 2}
+      Count: 30
   - MonsterEntries:
     - Monster: {fileID: 11400000, guid: 23dc7e29ca058d0459bae7d65d084142, type: 2}
       Count: 15
@@ -86,3 +84,4 @@ MonoBehaviour:
   DifficultyMultiplier: 1
   StartingGold: 300
   SpawnInterval: 0.6
+  TimeBetweenWaves: 5

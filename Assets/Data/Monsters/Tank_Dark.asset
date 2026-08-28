@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b948265b97b8784cb56db1e39ac34f9, type: 3}
   m_Name: Tank_Dark
   m_EditorClassIdentifier: Assembly-CSharp::ElementTD.MonsterDataSO
+  Element: 4
   BaseHealth: 30
   BaseMoveSpeed: 0.5
-  ElementResistances:
-  - Element: 5
-    DamageMultiplier: 1.5
-  - Element: 4
-    DamageMultiplier: 0.5
+  UseAutomaticResistances: 1
+  ElementResistances: []
   GoldReward: 3
   DamageToPlayer: 2
+  Defense: 6
   IsCrowdControlImmune: 0
   IsBoss: 0
