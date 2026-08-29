@@ -51,18 +51,27 @@ namespace ElementTD
 
                 _currentWaveIndex = waveIndex;
                 WaveData wave = stageData.WaveSequence[waveIndex];
+                float waveMultiplier = CalculateWaveMultiplier(stageData, waveIndex);
 
                 foreach (WaveMonsterEntry entry in wave.MonsterEntries)
                 {
                     for (int spawnedCount = 0; spawnedCount < entry.Count; spawnedCount++)
                     {
-                        SpawnMonster(entry.Monster, stageData.DifficultyMultiplier, stageReferences.Waypoints);
+                        SpawnMonster(entry.Monster, waveMultiplier, stageReferences.Waypoints);
                         yield return new WaitForSeconds(stageData.SpawnInterval);
                     }
                 }
             }
 
             IsSpawningComplete = true;
+        }
+
+        // 스테이지 배율에 웨이브 진행에 따른 추가 배율을 곱한 최종 배율을 계산한다.
+        // 웨이브 번호가 커질수록(0부터 시작) 몬스터가 조금씩 더 강해지며, 스테이지가 바뀌면 0부터 다시 계산된다.
+        private float CalculateWaveMultiplier(StageDataSO stageData, int waveIndex)
+        {
+            float waveBonus = 1f + waveIndex * stageData.WaveScalingRate;
+            return stageData.DifficultyMultiplier * waveBonus;
         }
 
         // 다음 웨이브까지 대기한다. 대기 중 SkipWaveDelay가 호출되면 즉시 종료한다.

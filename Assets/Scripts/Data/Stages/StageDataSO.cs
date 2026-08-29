@@ -43,5 +43,9 @@ namespace ElementTD
 
         [Tooltip("웨이브가 끝난 후 다음 웨이브가 시작되기까지 대기하는 시간이다. 단위는 초이며, 웨이브 즉시 시작 버튼으로 건너뛸 수 있다.")]
         public float TimeBetweenWaves = 5f;
+
+        [Tooltip("웨이브 번호 하나당 체력/누출피해/처치골드가 추가로 늘어나는 비율이다. " +
+            "0.05는 웨이브당 5 퍼센트씩 늘어난다는 뜻이며, DifficultyMultiplier와 곱해져서 최종 배율이 된다. 방어력에는 적용되지 않는다.")]
+        public float WaveScalingRate = 0.05f;
     }
 }

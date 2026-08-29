@@ -6,6 +6,7 @@ using UnityEngine;
 namespace ElementTD
 {
     // 선택된 타워의 이름, 강화 상태, 현재 받고 있는 원소 효과를 보여준다.
+    // 항상 선택된 타워 바로 위에 화면 좌표로 위치가 갱신된다.
     public class TowerInfoTooltip : MonoBehaviour
     {
         [SerializeField]
@@ -16,6 +17,17 @@ namespace ElementTD
 
         [SerializeField]
         private TextMeshProUGUI _infoText;
+
+        [Tooltip("타워 위치보다 얼마나 위쪽(픽셀)에 표시할지이다. 액션패널보다 더 위에 뜨도록 큰 값을 쓴다.")]
+        [SerializeField]
+        private float _verticalOffset = 140f;
+
+        private RectTransform _panelRectTransform;
+
+        private void Awake()
+        {
+            _panelRectTransform = _panelRoot.GetComponent<RectTransform>();
+        }
 
         private void Update()
         {
@@ -29,6 +41,7 @@ namespace ElementTD
 
             _panelRoot.SetActive(true);
             _infoText.text = BuildInfoText(selectedTower);
+            WorldToScreenUIPositioner.PositionAboveWorldPoint(_panelRectTransform, selectedTower.transform.position, _verticalOffset);
         }
 
         private string BuildInfoText(TowerBase tower)
