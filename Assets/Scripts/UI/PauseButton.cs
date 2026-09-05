@@ -18,6 +18,7 @@ namespace ElementTD
 
         public void OnPauseButtonClicked()
         {
+            SoundManager.instance.PlaySFX(ESfx.BUTTON_CLICK);
             GameSpeedManager.TogglePause();
         }
     }

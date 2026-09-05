@@ -72,6 +72,7 @@ namespace ElementTD
 
         private void SpawnHitEffect(Vector3 position)
         {
+            //SoundManager.instance.PlaySFX(ESfx.BASIC_ATK);
             if (_hitEffectPrefab != null)
             {
                 Instantiate(_hitEffectPrefab, position, Quaternion.identity);

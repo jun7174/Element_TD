@@ -21,6 +21,8 @@ MonoBehaviour:
   AttackRange: 7
   AttackPattern: 3
   TargetingStrategy: {fileID: 11400000, guid: f36280c15887a894e9e10f0f3788d67d, type: 2}
+  ProjectilePrefab: {fileID: 0}
+  HitEffectPrefab: {fileID: 7425187808060910299, guid: e6eb5de2de25e3a41b4a87d7bb9c14c7, type: 3}
   SplashRadius: 0
   EffectRadius: 0
   EffectAmount: 0

@@ -46,6 +46,7 @@ namespace ElementTD
             Debug.Log("시작 골드 " + EconomyManager.CurrentGold);
 
             _waveSpawner.StartStage(_stageData, stageReferences);
+            SoundManager.instance.PlayBGM(EBgm.GAME);
         }
     }
 }

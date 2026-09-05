@@ -34,6 +34,7 @@ namespace ElementTD
         {
             _lineRenderer.SetPosition(0, startPosition);
             _lineRenderer.SetPosition(1, endPosition);
+            SoundManager.instance.PlaySFX(ESfx.SNIPER_ATK);
         }
 
         private void Update()

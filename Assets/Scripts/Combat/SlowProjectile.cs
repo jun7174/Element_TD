@@ -68,7 +68,7 @@ namespace ElementTD
             {
                 _payload.ApplyTo(monster);
             }
-
+            SoundManager.instance.PlaySFX(ESfx.SPLAH_ATK);
             Destroy(gameObject);
         }
     }

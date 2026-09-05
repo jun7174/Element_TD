@@ -17,6 +17,7 @@ namespace ElementTD
 
         public void OnBuyButtonClicked()
         {
+            SoundManager.instance.PlaySFX(ESfx.BUTTON_CLICK);
             _selectionController.BeginPurchase(_towerPrefab);
         }
     }

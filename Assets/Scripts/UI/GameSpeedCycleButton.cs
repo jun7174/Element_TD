@@ -22,6 +22,7 @@ namespace ElementTD
 
         public void OnSpeedButtonClicked()
         {
+            SoundManager.instance.PlaySFX(ESfx.BUTTON_CLICK);
             int currentIndex = Array.IndexOf(SpeedSteps, GameSpeedManager.CurrentSpeed);
             int nextIndex = (currentIndex + 1) % SpeedSteps.Length;
             GameSpeedManager.SetSpeed(SpeedSteps[nextIndex]);

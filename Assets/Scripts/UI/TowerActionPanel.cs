@@ -58,7 +58,7 @@ namespace ElementTD
         private void OnUpgradeClicked()
         {
             TowerBase selectedTower = _selectionController.SelectedTower;
-
+            SoundManager.instance.PlaySFX(ESfx.BUTTON_CLICK);
             if (selectedTower != null)
             {
                 _upgradeController.TryUpgrade(selectedTower);
@@ -68,7 +68,7 @@ namespace ElementTD
         private void OnSellClicked()
         {
             TowerBase selectedTower = _selectionController.SelectedTower;
-
+            SoundManager.instance.PlaySFX(ESfx.BUTTON_CLICK);
             if (selectedTower != null)
             {
                 _tradeController.SellTower(selectedTower);
@@ -78,6 +78,7 @@ namespace ElementTD
 
         private void OnRelocateClicked()
         {
+            SoundManager.instance.PlaySFX(ESfx.BUTTON_CLICK);
             _selectionController.BeginRelocation();
         }
     }

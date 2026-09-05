@@ -12,6 +12,7 @@ namespace ElementTD
 
         public void OnSkipButtonClicked()
         {
+            SoundManager.instance.PlaySFX(ESfx.BUTTON_CLICK);
             _waveSpawner.SkipWaveDelay();
         }
     }

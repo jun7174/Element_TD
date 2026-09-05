@@ -25,8 +25,8 @@ namespace ElementTD
 
         private void Update()
         {
-            _goldText.text = "골드 " + EconomyManager.CurrentGold;
-            _healthText.text = "생명력 " + PlayerHealth.CurrentHealth;
+            _goldText.text = "" + EconomyManager.CurrentGold;
+            _healthText.text = ""+PlayerHealth.CurrentHealth;
             _timeText.text = FormatTime(GameTimer.ElapsedSeconds);
             _waveText.text = BuildWaveProgressText();
         }
