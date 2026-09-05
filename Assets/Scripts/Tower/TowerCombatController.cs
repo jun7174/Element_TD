@@ -124,6 +124,12 @@ namespace ElementTD
             if (towerData.AttackPattern == AttackPatternType.Sniper)
             {
                 SniperTracerSpawner.Spawn(transform.position, target.transform.position);
+
+                if (towerData.HitEffectPrefab != null)
+                {
+                    Instantiate(towerData.HitEffectPrefab, target.transform.position, Quaternion.identity);
+                }
+
                 payload.ApplyTo(target);
                 return;
             }
@@ -132,13 +138,13 @@ namespace ElementTD
             {
                 GameObject projectileObject = Instantiate(towerData.ProjectilePrefab, transform.position, Quaternion.identity);
                 SlowProjectile slowProjectile = projectileObject.GetComponent<SlowProjectile>();
-                slowProjectile.Launch(target.transform.position, towerData.SplashRadius, payload);
+                slowProjectile.Launch(target.transform.position, towerData.SplashRadius, payload, towerData.HitEffectPrefab);
                 return;
             }
 
             GameObject homingObject = Instantiate(towerData.ProjectilePrefab, transform.position, Quaternion.identity);
             HomingProjectile homingProjectile = homingObject.GetComponent<HomingProjectile>();
-            homingProjectile.Launch(target, payload);
+            homingProjectile.Launch(target, payload, towerData.HitEffectPrefab);
         }
 
         // 지금 이 타워의 유효 사거리를 반환한다. 원소 효과로 사거리가 늘어난 상태라면 그 값이 반영된다.

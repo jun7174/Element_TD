@@ -17,13 +17,15 @@ namespace ElementTD
         private Vector3 _destination;
         private float _splashRadius;
         private AttackPayload _payload;
+        private GameObject _hitEffectPrefab;
 
-        // 발사 시점에 호출해서 목표 좌표, 스플래시 반경, 데미지 정보를 설정한다.
-        public void Launch(Vector3 destination, float splashRadius, AttackPayload payload)
+        // 발사 시점에 호출해서 목표 좌표, 스플래시 반경, 데미지 정보, 명중 시 재생할 이펙트를 설정한다.
+        public void Launch(Vector3 destination, float splashRadius, AttackPayload payload, GameObject hitEffectPrefab)
         {
             _destination = destination;
             _splashRadius = splashRadius;
             _payload = payload;
+            _hitEffectPrefab = hitEffectPrefab;
         }
 
         private void Update()
@@ -54,6 +56,12 @@ namespace ElementTD
                 {
                     monstersInRange.Add(monster);
                 }
+            }
+
+            // 맞은 몬스터 수와 무관하게, 폭발 중심에 이펙트를 딱 한 번만 생성한다.
+            if (_hitEffectPrefab != null)
+            {
+                Instantiate(_hitEffectPrefab, transform.position, Quaternion.identity);
             }
 
             foreach (MonsterBase monster in monstersInRange)

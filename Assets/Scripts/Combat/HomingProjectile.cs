@@ -21,12 +21,14 @@ namespace ElementTD
 
         private MonsterBase _target;
         private AttackPayload _payload;
+        private GameObject _hitEffectPrefab;
 
-        // 발사 시점에 호출해서 추적할 대상과 데미지 정보를 설정한다.
-        public void Launch(MonsterBase target, AttackPayload payload)
+        // 발사 시점에 호출해서 추적할 대상, 데미지 정보, 명중 시 재생할 이펙트를 설정한다.
+        public void Launch(MonsterBase target, AttackPayload payload, GameObject hitEffectPrefab)
         {
             _target = target;
             _payload = payload;
+            _hitEffectPrefab = hitEffectPrefab;
         }
 
         private void Update()
@@ -43,6 +45,7 @@ namespace ElementTD
 
                 if (interceptor != null)
                 {
+                    SpawnHitEffect(interceptor.transform.position);
                     _payload.ApplyTo(interceptor);
                     Destroy(gameObject);
                     return;
@@ -61,8 +64,17 @@ namespace ElementTD
 
             if (distanceToTarget <= HitDistance)
             {
+                SpawnHitEffect(_target.transform.position);
                 _payload.ApplyTo(_target);
                 Destroy(gameObject);
+            }
+        }
+
+        private void SpawnHitEffect(Vector3 position)
+        {
+            if (_hitEffectPrefab != null)
+            {
+                Instantiate(_hitEffectPrefab, position, Quaternion.identity);
             }
         }
 

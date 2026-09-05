@@ -24,6 +24,9 @@ namespace ElementTD
         [Tooltip("발사할 투사체 프리팹이다. 저격형은 즉시 명중(히트스캔)이라 비워둔다.")]
         public GameObject ProjectilePrefab;
 
+        [Tooltip("명중 시 재생할 타격 이펙트 프리팹이다. 타워 종류마다 다르게 지정한다.")]
+        public GameObject HitEffectPrefab;
+
         [Tooltip("범위공격 타워에만 사용하며, 그 외 전투형 타워는 0으로 둔다.")]
         public float SplashRadius;
 

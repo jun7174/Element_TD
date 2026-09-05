@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b61b037ef00a84b8862855125a612e, type: 3}
   m_Name: WaterTile
   m_EditorClassIdentifier: Assembly-CSharp::ElementTD.ElementTileBase
-  m_Sprite: {fileID: 1441474139354803899, guid: 8ff37e15d83bcd144b7ba4bae70bf46d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6be2cea4cd2f41f4c812e270c7861270, type: 3}
   m_Color: {r: 0, g: 0.049153805, b: 1, a: 1}
   m_Transform:
     e00: 1
