@@ -24,10 +24,35 @@ namespace ElementTD
             List<Vector3Int> buildableCells = FindBuildableCells(buildableTilemap);
             List<Vector3Int> selectedCells = SelectRandomCells(buildableCells, elementTileRatio);
 
-            foreach (Vector3Int cellPosition in selectedCells)
+            AssignElementTiles(overlayTilemap, selectedCells);
+        }
+
+        // 선택된 칸 앞쪽에 5원소를 하나씩 겹치지 않게 먼저 배정하고(선택된 칸이 5개 미만이면 그 개수만큼만),
+        // 남는 칸은 기존처럼 완전히 랜덤한 원소를 배정한다.
+        // selectedCells 자체가 이미 셔플되어 있으므로, "앞쪽 칸"이 매번 다른 위치가 된다.
+        private void AssignElementTiles(Tilemap overlayTilemap, List<Vector3Int> selectedCells)
+        {
+            List<ElementTileBase> shuffledElements = new List<ElementTileBase>(_elementTileAssets);
+            ShuffleList(shuffledElements);
+
+            int guaranteedCount = Mathf.Min(selectedCells.Count, shuffledElements.Count);
+
+            // 임시 디버그 로그: 실제 배정 대상 칸 수와 원소 종류 수를 확인한다. 확인 후 삭제할 것.
+            Debug.Log("[원소배치 디버그] 배정 대상 칸 수: " + selectedCells.Count + ", 원소 종류 수: " + _elementTileAssets.Count + ", 보장 배정 수: " + guaranteedCount);
+
+            for (int index = 0; index < selectedCells.Count; index++)
             {
-                ElementTileBase randomTile = _elementTileAssets[Random.Range(0, _elementTileAssets.Count)];
-                overlayTilemap.SetTile(cellPosition, randomTile);
+                ElementTileBase tile = index < guaranteedCount
+                    ? shuffledElements[index]
+                    : _elementTileAssets[Random.Range(0, _elementTileAssets.Count)];
+
+                overlayTilemap.SetTile(selectedCells[index], tile);
+
+                // 임시 디버그 로그: 보장 배정 구간(index < guaranteedCount)에서 어떤 원소가 배정됐는지 확인한다. 확인 후 삭제할 것.
+                if (index < guaranteedCount)
+                {
+                    Debug.Log("[원소배치 디버그] 보장 배정 " + index + "번째 칸 " + selectedCells[index] + " → " + tile.name);
+                }
             }
         }
 
@@ -58,12 +83,12 @@ namespace ElementTD
             return shuffledCells.GetRange(0, clampedCount);
         }
 
-        private void ShuffleList(List<Vector3Int> list)
+        private void ShuffleList<T>(List<T> list)
         {
             for (int index = list.Count - 1; index > 0; index--)
             {
                 int randomIndex = Random.Range(0, index + 1);
-                Vector3Int temp = list[index];
+                T temp = list[index];
                 list[index] = list[randomIndex];
                 list[randomIndex] = temp;
             }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Stage1Data
   m_EditorClassIdentifier: Assembly-CSharp::ElementTD.StageDataSO
   StagePrefab: {fileID: 1407512584916476210, guid: 8bc2177f94bdac2479f2e83b9c4418ba, type: 3}
-  ElementTileRatio: 0.35
+  ElementTileRatio: 0.6
   WaveSequence:
   - MonsterEntries:
     - Monster: {fileID: 11400000, guid: e2d48903783e7114ba66af06f9b9d0cf, type: 2}
@@ -85,3 +85,4 @@ MonoBehaviour:
   StartingGold: 300
   SpawnInterval: 0.6
   TimeBetweenWaves: 5
+  WaveScalingRate: 0.05

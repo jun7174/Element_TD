@@ -1,5 +1,4 @@
 // Assets/Scripts/Core/SoundManager.cs
-
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -21,82 +20,98 @@ public enum ESfx
     BUTTON_CLICK,
 }
 
-public class SoundManager : MonoBehaviour
+namespace ElementTD
 {
-    public static SoundManager instance;
-
-    [Header("Audio Clips")]
-    [SerializeField] private AudioClip[] bgmClips;  // BGM 클립 배열
-    [SerializeField] private AudioClip[] sfxClips; // SFX 클립 배열
-
-    [Header("Audio Sources")]
-    [SerializeField] private AudioSource bgmSource; // BGM 재생 AudioSource
-    [SerializeField] private AudioSource sfxSource; // SFX 재생 AudioSource
-
-    private Dictionary<EBgm, AudioClip> bgmDict; // BGM Dictionary
-    private Dictionary<ESfx, AudioClip> sfxDict; // SFX Dictionary
-
-    private void Awake()
+    // SFX 하나당 클립과 개별 볼륨을 함께 지정하기 위한 구조체이다.
+    // Type을 명시적으로 지정하므로, 인스펙터에 채우는 순서가 enum 선언 순서와 달라도 안전하다.
+    [System.Serializable]
+    public struct SfxEntry
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
+        public ESfx Type;
+        public AudioClip Clip;
 
-        InitDictionaries();
+        [Range(0f, 2f)]
+        public float Volume;
     }
 
-    // Dictionary 초기화
-    private void InitDictionaries()
+    public class SoundManager : MonoBehaviour
     {
-        bgmDict = new Dictionary<EBgm, AudioClip>();
-        for (int i = 0; i < bgmClips.Length; i++)
+        public static SoundManager instance;
+
+        [Header("Audio Clips")]
+        [SerializeField] private AudioClip[] bgmClips;   // BGM 클립 배열
+        [SerializeField] private SfxEntry[] sfxEntries;  // SFX 클립 + 개별 볼륨 배열
+
+        [Header("Audio Sources")]
+        [SerializeField] private AudioSource bgmSource; // BGM 재생 AudioSource
+        [SerializeField] private AudioSource sfxSource; // SFX 재생 AudioSource
+
+        private Dictionary<EBgm, AudioClip> bgmDict; // BGM Dictionary
+        private Dictionary<ESfx, SfxEntry> sfxDict;   // SFX Dictionary
+
+        private void Awake()
         {
-            bgmDict[(EBgm)i] = bgmClips[i];
+            if (instance == null)
+            {
+                instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            InitDictionaries();
         }
 
-        sfxDict = new Dictionary<ESfx, AudioClip>();
-        for (int i = 0; i < sfxClips.Length; i++)
+        // Dictionary 초기화
+        private void InitDictionaries()
         {
-            sfxDict[(ESfx)i] = sfxClips[i];
-        }
-    }
+            bgmDict = new Dictionary<EBgm, AudioClip>();
+            for (int i = 0; i < bgmClips.Length; i++)
+            {
+                bgmDict[(EBgm)i] = bgmClips[i];
+            }
 
-    private void Start()
-    {
-        PlayBGM(EBgm.GAME);
-    }
-    // BGM 재생
-    public void PlayBGM(EBgm bgmType)
-    {
-        if (bgmDict.TryGetValue(bgmType, out var clip))
-        {
-            bgmSource.clip = clip;
-            bgmSource.loop = true; // 배경음악은 기본적으로 반복 재생
-            bgmSource.Play();
+            sfxDict = new Dictionary<ESfx, SfxEntry>();
+            foreach (SfxEntry entry in sfxEntries)
+            {
+                sfxDict[entry.Type] = entry;
+            }
         }
-        else
-        {
-            Debug.LogWarning("BGM not found in Dictionary!");
-        }
-    }
 
-    // SFX 재생
-    public void PlaySFX(ESfx sfxType)
-    {
-        if (sfxDict.TryGetValue(sfxType, out var clip))
+        private void Start()
         {
-            sfxSource.PlayOneShot(clip);
+            PlayBGM(EBgm.GAME);
         }
-        else
+
+        // BGM 재생
+        public void PlayBGM(EBgm bgmType)
         {
-            Debug.LogWarning("SFX not found in Dictionary!");
+            if (bgmDict.TryGetValue(bgmType, out var clip))
+            {
+                bgmSource.clip = clip;
+                bgmSource.loop = true; // 배경음악은 기본적으로 반복 재생
+                bgmSource.Play();
+            }
+            else
+            {
+                Debug.LogWarning("BGM not found in Dictionary!");
+            }
+        }
+
+        // SFX 재생 (엔트리에 지정된 개별 볼륨이 함께 적용된다)
+        public void PlaySFX(ESfx sfxType)
+        {
+            if (sfxDict.TryGetValue(sfxType, out var entry))
+            {
+                sfxSource.PlayOneShot(entry.Clip, entry.Volume);
+            }
+            else
+            {
+                Debug.LogWarning("SFX not found in Dictionary!");
+            }
         }
     }
 }
