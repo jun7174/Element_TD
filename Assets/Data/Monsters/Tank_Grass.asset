@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ElementTD.MonsterDataSO
   Element: 3
   BaseHealth: 30
-  BaseMoveSpeed: 0.5
+  BaseMoveSpeed: 1
   UseAutomaticResistances: 1
   ElementResistances: []
   GoldReward: 3

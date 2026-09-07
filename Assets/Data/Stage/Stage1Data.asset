@@ -17,7 +17,10 @@ MonoBehaviour:
   WaveSequence:
   - MonsterEntries:
     - Monster: {fileID: 11400000, guid: 23dc7e29ca058d0459bae7d65d084142, type: 2}
-      Count: 10
+      Count: 20
+  - MonsterEntries:
+    - Monster: {fileID: 11400000, guid: 045f224c5426efe4783d8052142e6fb6, type: 2}
+      Count: 20
   - MonsterEntries:
     - Monster: {fileID: 11400000, guid: 23dc7e29ca058d0459bae7d65d084142, type: 2}
       Count: 5
