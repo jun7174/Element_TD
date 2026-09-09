@@ -1,7 +1,7 @@
 # ElementTD
 
 > 타일의 원소가 타워의 공격 속성과 효과를 결정하는 2D 탑다운 타워 디펜스
-
+> 유튜브 링크 : https://www.youtube.com/watch?v=Egkz19-AAxE
 ---
 
 ## 목차
